@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#4b46e5">
+  <title>Mileo | Admin</title>
+  <link rel="stylesheet" href="assets/admin.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#overview"><span class="brand-mark">M</span><span>Mileo<small>Admin control centre</small></span></a>
+    <nav id="nav">
+      <button class="nav-item active" data-page="overview">⌂ <span>Overview</span></button>
+      <button class="nav-item" data-page="lessons">▣ <span>Lessons</span></button>
+      <button class="nav-item" data-page="teachers">♟ <span>Teachers</span></button>
+      <button class="nav-item" data-page="students">♙ <span>Students</span></button>
+      <button class="nav-item" data-page="packages">€ <span>Packages</span></button>
+      <button class="nav-item" data-page="courses">◎ <span>Courses</span></button>
+    </nav>
+    <div class="sidebar-note"><strong>MVP control layer</strong><span>One shared data model for admin, teachers and students.</span></div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <button id="menuBtn" class="icon-btn">☰</button>
+      <div><p class="eyebrow">Mileo operations</p><h1 id="pageTitle">Overview</h1></div>
+      <div class="top-actions">
+        <span id="apiStatus" class="pill warning">Demo data</span>
+        <button id="refreshBtn" class="button secondary">Refresh</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <section class="page active" id="page-overview">
+        <div class="hero">
+          <div><p class="eyebrow light">Today</p><h2>Run the learning system, not just the timetable.</h2>
+          <p>Monitor teaching, student progress, packages, teacher pay and actions requiring attention.</p></div>
+          <button class="button white" data-go="lessons">View all lessons →</button>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="grid-2">
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Operations</p><h3>Today's lessons</h3></div><button class="text-btn" data-go="lessons">View all →</button></div><div id="todayLessons"></div></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Attention</p><h3>Action required</h3></div></div><div id="actions"></div></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Commercial</p><h3>Package health</h3></div></div><div id="packageHealth"></div></article>
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Academic</p><h3>Course activity</h3></div></div><div id="courseActivity"></div></article>
+        </div>
+      </section>
+
+      <section class="page" id="page-lessons">
+        <div class="toolbar"><div><p class="eyebrow">Teaching operations</p><h2>Lessons</h2><p class="muted">Every booked lesson, its status and whether the academic record is complete.</p></div></div>
+        <div class="filters"><input id="lessonSearch" type="search" placeholder="Search student, teacher or course"><select id="lessonStatus"><option value="">All statuses</option><option>Scheduled</option><option>Completed</option><option>Record due</option><option>Cancelled</option></select></div>
+        <div class="table-card"><table><thead><tr><th>Date / time</th><th>Student</th><th>Teacher</th><th>Course</th><th>Status</th><th>Record</th></tr></thead><tbody id="lessonsBody"></tbody></table></div>
+      </section>
+
+      <section class="page" id="page-teachers">
+        <div class="toolbar"><div><p class="eyebrow">Teacher network</p><h2>Teachers</h2><p class="muted">Approval, schedule load, completed lessons, money owed and quality status.</p></div></div>
+        <div class="card-grid" id="teachersGrid"></div>
+      </section>
+
+      <section class="page" id="page-students">
+        <div class="toolbar"><div><p class="eyebrow">Learner operations</p><h2>Students</h2><p class="muted">Course, package balance, progress and upcoming teaching.</p></div></div>
+        <div class="table-card"><table><thead><tr><th>Student</th><th>Course</th><th>Package</th><th>Used</th><th>Remaining</th><th>Progress</th></tr></thead><tbody id="studentsBody"></tbody></table></div>
+      </section>
+
+      <section class="page" id="page-packages">
+        <div class="toolbar"><div><p class="eyebrow">Commercial control</p><h2>Packages</h2><p class="muted">Track what students bought, revenue collected, delivery cost and indicative contribution.</p></div></div>
+        <div class="table-card"><table><thead><tr><th>Student</th><th>Package</th><th>Charged</th><th>Lessons</th><th>Teacher cost</th><th>Indicative contribution</th><th>Status</th></tr></thead><tbody id="packagesBody"></tbody></table></div>
+        <p class="footnote">Contribution is a prototype calculation: amount charged − teacher delivery cost. Payment fees, AI/technology, assessment and support costs are not yet deducted.</p>
+      </section>
+
+      <section class="page" id="page-courses">
+        <div class="toolbar"><div><p class="eyebrow">Academic control</p><h2>Courses & syllabus</h2><p class="muted">The admin-owned academic source teachers will use for outcomes, guidance and resources.</p></div></div>
+        <div class="card-grid" id="coursesGrid"></div>
+      </section>
+    </div>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+<script src="assets/mileo-api.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>
