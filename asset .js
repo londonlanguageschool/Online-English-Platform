@@ -1,1 +1,49 @@
-"use strict";const API="https://script.google.com/macros/s/AKfycbymeTm42qP3ko1iZl1tNE_e607mSiLDGpqwMdUHE_tMFo2ggnyHXkL8rMzgN6HaxyDo/exec";const f=document.getElementById("enquiryForm"),s=document.getElementById("formStatus");f.addEventListener("submit",async e=>{e.preventDefault();const b=f.querySelector("button"),d=new FormData(f),p={name:(d.get("name")||"").trim(),email:(d.get("email")||"").trim(),phone:(d.get("phone")||"").trim(),course:d.get("course")||"",source:"Mileo Website",notes:(d.get("notes")||"").trim(),trialRequested:d.get("trialRequested")||"No"};b.disabled=true;b.textContent="Sending…";s.textContent="";try{const r=await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(p)}),j=await r.json();if(!j.success)throw Error(j.message);s.className="ok";s.textContent="Thanks — enquiry received. Reference: "+j.enquiryId;f.reset()}catch(x){console.error(x);s.className="bad";s.textContent="We couldn't send your enquiry. Please try again."}finally{b.disabled=false;b.textContent="Send my enquiry →"}});
+const MILEO_API_URL =
+  "https://script.google.com/macros/s/AKfycbymeTm42qP3ko1iZl1tNE_e607mSiLDGpqwMdUHE_tMFo2ggnyHXkL8rMzgN6HaxyDo/exec";
+
+const form = document.getElementById("enquiryForm");
+const status = document.getElementById("formStatus");
+
+if (form) {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const button = form.querySelector(".submit");
+    const formData = new FormData(form);
+
+    const data = {
+      name: formData.get("name") || "",
+      email: formData.get("email") || "",
+      phone: formData.get("phone") || "",
+      course: formData.get("course") || "",
+      notes: formData.get("notes") || "",
+      trialRequested: formData.get("trialRequested") || "No",
+      source: "Website"
+    };
+
+    button.disabled = true;
+    button.textContent = "Sending…";
+    status.textContent = "";
+
+    try {
+      await fetch(MILEO_API_URL, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        }
+      });
+
+      status.textContent = "✓ Thanks — your enquiry has been received.";
+      form.reset();
+
+    } catch (error) {
+      console.error(error);
+      status.textContent =
+        "We couldn't send your enquiry. Please try again.";
+    } finally {
+      button.disabled = false;
+      button.textContent = "Send my enquiry →";
+    }
+  });
+}
