@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>My Learning | Mileo</title>
+
+  <link rel="stylesheet" href="assets/site.css">
+
+  <style>
+    body {
+      background: #f9faff;
+    }
+
+    .student-header {
+      background: white;
+      border-bottom: 1px solid #e8e9f2;
+    }
+
+    .student-nav {
+      max-width: 1240px;
+      margin: auto;
+      min-height: 76px;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .student-nav .brand {
+      margin-right: 20px;
+    }
+
+    .portal-nav {
+      display: flex;
+      gap: 22px;
+      flex: 1;
+    }
+
+    .portal-nav a {
+      font-size: 14px;
+      font-weight: 700;
+      color: #68728f;
+    }
+
+    .portal-nav a.active {
+      color: #4b46e5;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .avatar {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #f6c6d8;
+      color: #20264d;
+      font-weight: 900;
+    }
+
+    .dashboard {
+      max-width: 1180px;
+      margin: auto;
+      padding: 52px 24px 90px;
+    }
+
+    .welcome {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      align-items: end;
+      margin-bottom: 35px;
+    }
+
+    .welcome h1 {
+      font-size: 44px;
+      margin: 6px 0 8px;
+      letter-spacing: -1.8px;
+    }
+
+    .welcome p {
+      color: #68728f;
+      margin: 0;
+    }
+
+    .level-badge {
+      padding: 11px 16px;
+      border-radius: 15px;
+      background: #e8e5ff;
+      color: #4b46e5;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e7e8f1;
+      border-radius: 22px;
+      padding: 25px;
+      box-shadow: 0 12px 35px rgba(45, 50, 95, .06);
+    }
+
+    .panel h2 {
+      font-size: 22px;
+      margin: 0 0 6px;
+      letter-spacing: -.5px;
+    }
+
+    .panel-subtitle {
+      color: #7a829b;
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    .next-lesson {
+      background: linear-gradient(135deg, #e5f5ff, #e4f9ef);
+    }
+
+    .lesson-date {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: white;
+      color: #4b46e5;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .next-lesson h3 {
+      font-size: 25px;
+      margin: 0 0 8px;
+    }
+
+    .lesson-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      color: #5e6882;
+      font-size: 13px;
+      margin: 18px 0 22px;
+    }
+
+    .lesson-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .secondary-btn {
+      display: inline-block;
+      padding: 11px 15px;
+      border: 1px solid #d8dbea;
+      border-radius: 11px;
+      background: white;
+      color: #20264d;
+      font-weight: 750;
+      font-size: 13px;
+    }
+
+    .pathway {
+      margin-top: 20px;
+      grid-column: 1 / -1;
+    }
+
+    .pathway-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .stage-label {
+      color: #4b46e5;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .progress-number {
+      font-size: 13px;
+      font-weight: 800;
+      color: #68728f;
+    }
+
+    .pathway-track {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .stage {
+      position: relative;
+      padding: 20px 16px;
+      border-radius: 18px;
+      min-height: 140px;
+    }
+
+    .stage-number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: rgba(255,255,255,.75);
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .stage strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .stage small {
+      color: #65708a;
+    }
+
+    .stage.complete {
+      background: #e1f7e9;
+    }
+
+    .stage.complete .stage-number {
+      color: #19875c;
+    }
+
+    .stage.current {
+      background: #ddf3ff;
+      outline: 2px solid #8bd2f4;
+    }
+
+    .stage.next-stage {
+      background: #fff3c7;
+    }
+
+    .stage.future {
+      background: #fbe3ec;
+    }
+
+    .lower-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .lesson-record {
+      background: #f1efff;
+    }
+
+    .practice {
+      background: #fff3c7;
+    }
+
+    .checkpoint {
+      background: #fbe3ec;
+    }
+
+    .small-label {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      color: #697493;
+    }
+
+    .panel h3 {
+      margin: 10px 0;
+      font-size: 19px;
+    }
+
+    .panel p {
+      color: #68728f;
+      font-size: 13px;
+    }
+
+    .teacher-note {
+      padding: 14px;
+      margin: 17px 0;
+      background: rgba(255,255,255,.65);
+      border-radius: 13px;
+      font-size: 13px;
+      color: #525d78;
+    }
+
+    .skill {
+      margin: 15px 0;
+    }
+
+    .skill-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 750;
+      margin-bottom: 7px;
+    }
+
+    .bar {
+      height: 8px;
+      background: rgba(255,255,255,.8);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #4b46e5, #2dd4bf);
+    }
+
+    .demo-warning {
+      margin-top: 28px;
+      padding: 13px 16px;
+      background: #fff;
+      border: 1px dashed #cfd2e2;
+      border-radius: 12px;
+      color: #7a829b;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media(max-width: 900px) {
+      .portal-nav {
+        display: none;
+      }
+
+      .profile {
+        margin-left: auto;
+      }
+
+      .dashboard-grid,
+      .lower-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pathway {
+        grid-column: auto;
+      }
+
+      .pathway-track {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width: 600px) {
+      .student-nav {
+        padding: 12px 18px;
+      }
+
+      .profile span:not(.avatar) {
+        display: none;
+      }
+
+      .dashboard {
+        padding: 35px 18px 70px;
+      }
+
+      .welcome {
+        display: block;
+      }
+
+      .level-badge {
+        display: inline-block;
+        margin-top: 15px;
+      }
+
+      .welcome h1 {
+        font-size: 36px;
+      }
+
+      .pathway-track {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="student-header">
+
+  <div class="student-nav">
+
+    <a class="brand" href="index.html">
+      <b>M</b>
+
+      <span>
+        Mileo
+        <small>My Learning</small>
+      </span>
+    </a>
+
+    <nav class="portal-nav">
+      <a class="active" href="#">Dashboard</a>
+      <a href="#">My Learning</a>
+      <a href="#">Lessons</a>
+      <a href="#">Progress</a>
+      <a href="#">Practice</a>
+    </nav>
+
+    <div class="profile">
+      <span class="avatar">TS</span>
+      <span>Test Student</span>
+    </div>
+
+  </div>
+
+</header>
+
+
+<main class="dashboard">
+
+  <section class="welcome">
+
+    <div>
+      <span class="kicker">MY MILEO</span>
+
+      <h1>Welcome back, Test.</h1>
+
+      <p>
+        You're making progress. Here's where your learning journey
+        continues.
+      </p>
+    </div>
+
+    <span class="level-badge">
+      General English · A1
+    </span>
+
+  </section>
+
+
+  <section class="dashboard-grid">
+
+    <article class="panel next-lesson">
+
+      <span class="lesson-date">
+        NEXT LESSON · DEMO
+      </span>
+
+      <h3>
+        Everyday communication
+      </h3>
+
+      <p>
+        Practise asking and answering questions about everyday
+        routines and activities.
+      </p>
+
+      <div class="lesson-details">
+        <span>◷ Tuesday · 18:00</span>
+        <span>◉ 50 minutes</span>
+        <span>✎ Teacher: Sarah</span>
+      </div>
+
+      <div class="lesson-actions">
+        <a class="btn mini" href="#">
+          Join lesson
+        </a>
+
+        <a class="secondary-btn" href="#">
+          Lesson details
+        </a>
+      </div>
+
+    </article>
+
+
+    <article class="panel">
+
+      <span class="small-label">
+        THIS WEEK
+      </span>
+
+      <h3>Your focus</h3>
+
+      <p>
+        Build confidence asking questions and responding naturally
+        in everyday conversations.
+      </p>
+
+      <div class="skill">
+
+        <div class="skill-head">
+          <span>Weekly progress</span>
+          <span>70%</span>
+        </div>
+
+        <div class="bar">
+          <span style="width:70%"></span>
+        </div>
+
+      </div>
+
+      <div class="teacher-note">
+        <strong>Teacher tip</strong><br>
+        Try using three new question forms in your next conversation.
+      </div>
+
+    </article>
+
+
+    <article class="panel pathway">
+
+      <div class="pathway-head">
+
+        <div>
+          <span class="stage-label">
+            YOUR LEARNING PATHWAY
+          </span>
+
+          <h2>
+            General English · A1
+          </h2>
+
+          <p class="panel-subtitle">
+            Each stage builds towards meaningful language outcomes.
+          </p>
+        </div>
+
+        <span class="progress-number">
+          Stage 3 of 5
+        </span>
+
+      </div>
+
+
+      <div class="pathway-track">
+
+        <div class="stage complete">
+
+          <span class="stage-number">✓</span>
+
+          <strong>
+            Getting started
+          </strong>
+
+          <small>
+            Completed
+          </small>
+
+        </div>
+
+
+        <div class="stage complete">
+
+          <span class="stage-number">✓</span>
+
+          <strong>
+            Everyday essentials
+          </strong>
+
+          <small>
+            Completed
+          </small>
+
+        </div>
+
+
+        <div class="stage current">
+
+          <span class="stage-number">3</span>
+
+          <strong>
+            Daily life
+          </strong>
+
+          <small>
+            In progress
+          </small>
+
+        </div>
+
+
+        <div class="stage next-stage">
+
+          <span class="stage-number">★</span>
+
+          <strong>
+            Checkpoint
+          </strong>
+
+          <small>
+            Coming next
+          </small>
+
+        </div>
+
+
+        <div class="stage future">
+
+          <span class="stage-number">→</span>
+
+          <strong>
+            Next milestone
+          </strong>
+
+          <small>
+            Locked
+          </small>
+
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <section class="lower-grid">
+
+
+    <article class="panel lesson-record">
+
+      <span class="small-label">
+        LAST LESSON
+      </span>
+
+      <h3>
+        Talking about routines
+      </h3>
+
+      <p>
+        You practised present simple questions and vocabulary
+        for daily activities.
+      </p>
+
+      <div class="teacher-note">
+        <strong>Teacher note</strong><br>
+        Good progress with question forms. Keep working on
+        third-person endings.
+      </div>
+
+      <a class="secondary-btn" href="#">
+        View lesson record →
+      </a>
+
+    </article>
+
+
+    <article class="panel practice">
+
+      <span class="small-label">
+        PRACTICE
+      </span>
+
+      <h3>
+        Keep the learning going.
+      </h3>
+
+      <p>
+        Your teacher has suggested a short practice activity before
+        your next lesson.
+      </p>
+
+      <div class="teacher-note">
+        <strong>10 minutes</strong><br>
+        Everyday questions &amp; responses
+      </div>
+
+      <a class="secondary-btn" href="#">
+        Start practice →
+      </a>
+
+    </article>
+
+
+    <article class="panel checkpoint">
+
+      <span class="small-label">
+        NEXT CHECKPOINT
+      </span>
+
+      <h3>
+        Your first milestone.
+      </h3>
+
+      <p>
+        Complete Stage 3 and you'll reach your next academic
+        checkpoint.
+      </p>
+
+      <div class="skill">
+
+        <div class="skill-head">
+          <span>Checkpoint readiness</span>
+          <span>68%</span>
+        </div>
+
+        <div class="bar">
+          <span style="width:68%"></span>
+        </div>
+
+      </div>
+
+      <p>
+        Your teacher will let you know when you're ready.
+      </p>
+
+    </article>
+
+  </section>
+
+
+  <div class="demo-warning">
+    DEMO STUDENT DASHBOARD — all information shown here is fictional.
+    Secure authentication and live student data have not yet been connected.
+  </div>
+
+</main>
+
+</body>
+</html>
