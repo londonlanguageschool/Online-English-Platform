@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Log in | Mileo</title>
+
+  <meta name="description"
+        content="Log in to your Mileo learning portal.">
+
+  <link rel="stylesheet" href="assets/site.css">
+
+  <style>
+    .login-page {
+      min-height: calc(100vh - 160px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 24px;
+      background:
+        linear-gradient(
+          135deg,
+          #f4f1ff 0%,
+          #eef9ff 35%,
+          #effcf7 68%,
+          #fff4f7 100%
+        );
+    }
+
+    .login-wrap {
+      width: 100%;
+      max-width: 1050px;
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .login-intro h1 {
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 0.98;
+      margin: 18px 0 24px;
+    }
+
+    .login-intro p {
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    .login-card {
+      background: white;
+      border: 1px solid #e5e7f2;
+      border-radius: 28px;
+      padding: 38px;
+      box-shadow: 0 25px 70px rgba(35, 43, 95, 0.12);
+    }
+
+    .login-card h2 {
+      margin-top: 0;
+      font-size: 30px;
+    }
+
+    .login-card > p {
+      margin-bottom: 28px;
+    }
+
+    .portal-options {
+      display: grid;
+      gap: 14px;
+    }
+
+    .portal-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px;
+      border: 1px solid #e3e6f2;
+      border-radius: 18px;
+      text-decoration: none;
+      color: inherit;
+      background: white;
+      transition: 0.2s ease;
+    }
+
+    .portal-option:hover {
+      transform: translateY(-2px);
+      border-color: #7d73f5;
+      box-shadow: 0 12px 30px rgba(64, 70, 150, 0.10);
+    }
+
+    .portal-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      font-size: 23px;
+      flex: 0 0 auto;
+    }
+
+    .student-icon {
+      background: #e5f5ff;
+    }
+
+    .teacher-icon {
+      background: #e6faf2;
+    }
+
+    .admin-icon {
+      background: #ffeaf1;
+    }
+
+    .portal-option strong {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 3px;
+    }
+
+    .portal-option small {
+      opacity: 0.7;
+      line-height: 1.4;
+    }
+
+    .portal-arrow {
+      margin-left: auto;
+      font-size: 20px;
+    }
+
+    .login-note {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #eceef5;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 800px) {
+      .login-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .login-page {
+        padding-top: 40px;
+      }
+
+      .login-intro {
+        text-align: center;
+      }
+
+      .login-intro p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <a class="brand" href="index.html">
+    <b>M</b>
+
+    <span>
+      Mileo
+      <small>Step by step, we grow together.</small>
+    </span>
+  </a>
+
+  <nav>
+    <a href="index.html#how">How it works</a>
+    <a href="index.html#learning">Learning</a>
+    <a href="index.html#progress">Progress</a>
+    <a href="teachers.html">Teach with us</a>
+  </nav>
+
+  <a class="btn mini" href="index.html#enquire">
+    Start your journey
+  </a>
+
+</header>
+
+
+<main class="login-page">
+
+  <div class="login-wrap">
+
+    <section class="login-intro">
+
+      <span class="kicker">
+        YOUR MILEO
+      </span>
+
+      <h1>
+        Pick up where
+        <em>you left off.</em>
+      </h1>
+
+      <p>
+        Mileo brings your lessons, learning records and progress
+        together in one place.
+      </p>
+
+      <p>
+        Students, teachers and administrators use the same Mileo
+        learning system, with each person seeing the tools relevant
+        to their role.
+      </p>
+
+    </section>
+
+
+    <section class="login-card">
+
+      <span class="kicker">
+        MILEO PORTAL
+      </span>
+
+      <h2>Welcome back.</h2>
+
+      <p>
+        Choose your portal to continue.
+      </p>
+
+
+      <div class="portal-options">
+
+        <a class="portal-option" href="student-dashboard.html">
+
+          <span class="portal-icon student-icon">
+            ◉
+          </span>
+
+          <span>
+            <strong>Student</strong>
+            <small>
+              Lessons, learning pathway and progress
+            </small>
+          </span>
+
+          <span class="portal-arrow">→</span>
+
+        </a>
+
+
+        <a class="portal-option" href="teacher-dashboard.html">
+
+          <span class="portal-icon teacher-icon">
+            ✎
+          </span>
+
+          <span>
+            <strong>Teacher</strong>
+            <small>
+              Students, classes and lesson records
+            </small>
+          </span>
+
+          <span class="portal-arrow">→</span>
+
+        </a>
+
+
+        <a class="portal-option" href="admin/">
+
+          <span class="portal-icon admin-icon">
+            ⚙
+          </span>
+
+          <span>
+            <strong>Admin</strong>
+            <small>
+              Manage the Mileo learning platform
+            </small>
+          </span>
+
+          <span class="portal-arrow">→</span>
+
+        </a>
+
+      </div>
+
+
+      <div class="login-note">
+        Portal access is currently being built. Secure account
+        authentication will be added before real student or teacher
+        accounts are used.
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div>
+    <strong>Mileo</strong>
+    <small>Step by step, we grow together.</small>
+  </div>
+
+  <div>
+    <a href="index.html">Home</a>
+    　
+    <a href="teachers.html">Teach with Mileo</a>
+  </div>
+
+  <small>
+    Mileo · Structured online English learning
+  </small>
+
+</footer>
+
+</body>
+</html>
