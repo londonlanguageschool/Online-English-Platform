@@ -13,6 +13,28 @@
       background: #f9faff;
     }
 
+    /* Hide protected content until authentication is checked */
+    body.auth-loading .student-header,
+    body.auth-loading .dashboard {
+      visibility: hidden;
+    }
+
+    .auth-screen {
+      position: fixed;
+      inset: 0;
+      background: #f9faff;
+      display: grid;
+      place-items: center;
+      z-index: 9999;
+      color: #4b46e5;
+      font-weight: 800;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body.auth-ready .auth-screen {
+      display: none;
+    }
+
     .student-header {
       background: white;
       border-bottom: 1px solid #e8e9f2;
@@ -65,6 +87,21 @@
       background: #f6c6d8;
       color: #20264d;
       font-weight: 900;
+    }
+
+    .signout {
+      border: 1px solid #d8dbea;
+      background: white;
+      color: #4b46e5;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .signout:hover {
+      background: #f4f3ff;
     }
 
     .dashboard {
@@ -362,7 +399,7 @@
         padding: 12px 18px;
       }
 
-      .profile span:not(.avatar) {
+      .profile-name {
         display: none;
       }
 
@@ -390,7 +427,11 @@
   </style>
 </head>
 
-<body>
+<body class="auth-loading">
+
+<div class="auth-screen">
+  Checking your Mileo account…
+</div>
 
 <header class="student-header">
 
@@ -414,8 +455,12 @@
     </nav>
 
     <div class="profile">
-      <span class="avatar">TS</span>
-      <span>Test Student</span>
+      <span class="avatar" id="studentAvatar">M</span>
+      <span class="profile-name" id="studentName">Student</span>
+
+      <button class="signout" id="signOutButton" type="button">
+        Sign out
+      </button>
     </div>
 
   </div>
@@ -430,7 +475,9 @@
     <div>
       <span class="kicker">MY MILEO</span>
 
-      <h1>Welcome back, Test.</h1>
+      <h1>
+        Welcome back, <span id="welcomeName">Student</span>.
+      </h1>
 
       <p>
         You're making progress. Here's where your learning journey
@@ -543,77 +590,33 @@
       <div class="pathway-track">
 
         <div class="stage complete">
-
           <span class="stage-number">✓</span>
-
-          <strong>
-            Getting started
-          </strong>
-
-          <small>
-            Completed
-          </small>
-
+          <strong>Getting started</strong>
+          <small>Completed</small>
         </div>
-
 
         <div class="stage complete">
-
           <span class="stage-number">✓</span>
-
-          <strong>
-            Everyday essentials
-          </strong>
-
-          <small>
-            Completed
-          </small>
-
+          <strong>Everyday essentials</strong>
+          <small>Completed</small>
         </div>
-
 
         <div class="stage current">
-
           <span class="stage-number">3</span>
-
-          <strong>
-            Daily life
-          </strong>
-
-          <small>
-            In progress
-          </small>
-
+          <strong>Daily life</strong>
+          <small>In progress</small>
         </div>
-
 
         <div class="stage next-stage">
-
           <span class="stage-number">★</span>
-
-          <strong>
-            Checkpoint
-          </strong>
-
-          <small>
-            Coming next
-          </small>
-
+          <strong>Checkpoint</strong>
+          <small>Coming next</small>
         </div>
 
-
         <div class="stage future">
-
           <span class="stage-number">→</span>
-
-          <strong>
-            Next milestone
-          </strong>
-
-          <small>
-            Locked
-          </small>
-
+          <strong>Next milestone</strong>
+          <small>Locked</small>
         </div>
 
       </div>
@@ -624,7 +627,6 @@
 
 
   <section class="lower-grid">
-
 
     <article class="panel lesson-record">
 
@@ -719,11 +721,153 @@
 
 
   <div class="demo-warning">
-    DEMO STUDENT DASHBOARD — all information shown here is fictional.
-    Secure authentication and live student data have not yet been connected.
+    MILEO DEVELOPMENT DASHBOARD — authentication is live.
+    Lesson, teacher, pathway and progress information shown here
+    is currently fictional test data.
   </div>
 
 </main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+  const SUPABASE_URL =
+    "https://heaztfynqejioycqvjum.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_wP-MBTyxyhBV07Eg6ce2CA_fqYzvWWu";
+
+  const mileo = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+  function getInitials(name) {
+
+    if (!name) {
+      return "M";
+    }
+
+    const words = name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+    if (words.length === 1) {
+      return words[0].charAt(0).toUpperCase();
+    }
+
+    return (
+      words[0].charAt(0) +
+      words[words.length - 1].charAt(0)
+    ).toUpperCase();
+  }
+
+
+  async function protectDashboard() {
+
+    try {
+
+      /*
+        getUser asks Supabase to verify the current authenticated
+        user rather than simply trusting what is stored locally.
+      */
+      const { data, error } = await mileo.auth.getUser();
+
+      if (error || !data.user) {
+
+        window.location.replace("login.html");
+        return;
+
+      }
+
+
+      const user = data.user;
+
+      const fullName =
+        user.user_metadata?.full_name ||
+        user.email?.split("@")[0] ||
+        "Student";
+
+
+      /*
+        Accounts created through the public Mileo registration
+        currently receive the student role.
+      */
+      const role =
+        user.user_metadata?.role || "student";
+
+
+      if (role !== "student") {
+
+        await mileo.auth.signOut();
+        window.location.replace("login.html");
+        return;
+
+      }
+
+
+      const firstName =
+        fullName.trim().split(/\s+/)[0];
+
+
+      document.getElementById("studentName").textContent =
+        fullName;
+
+      document.getElementById("welcomeName").textContent =
+        firstName;
+
+      document.getElementById("studentAvatar").textContent =
+        getInitials(fullName);
+
+
+      document.body.classList.remove("auth-loading");
+      document.body.classList.add("auth-ready");
+
+
+    } catch (error) {
+
+      console.error("Mileo authentication check failed:", error);
+
+      window.location.replace("login.html");
+
+    }
+
+  }
+
+
+  document
+    .getElementById("signOutButton")
+    .addEventListener("click", async function() {
+
+      const button = this;
+
+      button.disabled = true;
+      button.textContent = "Signing out…";
+
+      try {
+
+        await mileo.auth.signOut();
+
+      } catch (error) {
+
+        console.error("Sign out error:", error);
+
+      } finally {
+
+        window.location.replace("login.html");
+
+      }
+
+    });
+
+
+  protectDashboard();
+
+</script>
 
 </body>
 </html>
