@@ -1,157 +1,271 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Log in | Mileo</title>
-
-  <meta name="description"
-        content="Log in to your Mileo learning portal.">
-
-  <link rel="stylesheet" href="assets/site.css">
+  <title>Mileo | Sign in</title>
 
   <style>
-    .login-page {
-      min-height: calc(100vh - 160px);
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        linear-gradient(135deg, #f8f9ff 0%, #eef7ff 50%, #f4fffb 100%);
+      color: #18214d;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: white;
+      border-bottom: 1px solid #e7e9f3;
+    }
+
+    .nav {
+      max-width: 1180px;
+      margin: auto;
+      padding: 20px 24px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 70px 24px;
-      background:
-        linear-gradient(
-          135deg,
-          #f4f1ff 0%,
-          #eef9ff 35%,
-          #effcf7 68%,
-          #fff4f7 100%
-        );
+      justify-content: space-between;
     }
 
-    .login-wrap {
-      width: 100%;
-      max-width: 1050px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #18214d;
+      font-weight: 800;
+      font-size: 26px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #4f46e5, #22c7d6);
+      color: white;
       display: grid;
-      grid-template-columns: 1fr 0.9fr;
-      gap: 50px;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .home-link {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 70px 24px;
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 70px;
       align-items: center;
     }
 
-    .login-intro h1 {
-      font-size: clamp(42px, 6vw, 72px);
-      line-height: 0.98;
+    .intro .eyebrow {
+      color: #4f46e5;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .intro h1 {
+      font-size: clamp(42px, 6vw, 68px);
+      line-height: 1;
       margin: 18px 0 24px;
+      letter-spacing: -2px;
     }
 
-    .login-intro p {
-      font-size: 18px;
+    .intro h1 span {
+      background: linear-gradient(90deg, #4f46e5, #22b8d1);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .intro p {
+      font-size: 19px;
       line-height: 1.7;
-      max-width: 520px;
+      color: #626b8d;
+      max-width: 560px;
     }
 
-    .login-card {
+    .benefits {
+      margin-top: 30px;
+      display: grid;
+      gap: 14px;
+      font-weight: 700;
+    }
+
+    .benefit::before {
+      content: "✓";
+      color: #12a36d;
+      margin-right: 10px;
+    }
+
+    .card {
       background: white;
-      border: 1px solid #e5e7f2;
-      border-radius: 28px;
-      padding: 38px;
-      box-shadow: 0 25px 70px rgba(35, 43, 95, 0.12);
+      padding: 34px;
+      border: 1px solid #e0e4f0;
+      border-radius: 26px;
+      box-shadow: 0 24px 70px rgba(40, 50, 100, 0.12);
     }
 
-    .login-card h2 {
-      margin-top: 0;
-      font-size: 30px;
-    }
-
-    .login-card > p {
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #f1f3fb;
+      padding: 5px;
+      border-radius: 13px;
       margin-bottom: 28px;
     }
 
-    .portal-options {
-      display: grid;
-      gap: 14px;
+    .tab {
+      border: 0;
+      background: transparent;
+      padding: 13px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 800;
+      color: #6a7190;
     }
 
-    .portal-option {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 18px;
-      border: 1px solid #e3e6f2;
-      border-radius: 18px;
-      text-decoration: none;
-      color: inherit;
+    .tab.active {
       background: white;
-      transition: 0.2s ease;
+      color: #4f46e5;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
     }
 
-    .portal-option:hover {
-      transform: translateY(-2px);
-      border-color: #7d73f5;
-      box-shadow: 0 12px 30px rgba(64, 70, 150, 0.10);
+    h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
     }
 
-    .portal-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 15px;
-      display: grid;
-      place-items: center;
-      font-size: 23px;
-      flex: 0 0 auto;
+    .subheading {
+      color: #727995;
+      margin: 0 0 26px;
+      line-height: 1.5;
     }
 
-    .student-icon {
-      background: #e5f5ff;
+    .field {
+      margin-bottom: 18px;
     }
 
-    .teacher-icon {
-      background: #e6faf2;
-    }
-
-    .admin-icon {
-      background: #ffeaf1;
-    }
-
-    .portal-option strong {
+    label {
       display: block;
-      font-size: 17px;
-      margin-bottom: 3px;
+      margin-bottom: 8px;
+      font-weight: 800;
+      font-size: 14px;
     }
 
-    .portal-option small {
-      opacity: 0.7;
-      line-height: 1.4;
+    input {
+      width: 100%;
+      border: 1px solid #d8ddec;
+      border-radius: 12px;
+      padding: 15px 16px;
+      font-size: 16px;
+      outline: none;
+      background: white;
     }
 
-    .portal-arrow {
-      margin-left: auto;
-      font-size: 20px;
+    input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79,70,229,.10);
     }
 
-    .login-note {
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid #eceef5;
+    .password-note {
+      font-size: 12px;
+      color: #7a819b;
+      margin-top: 7px;
+    }
+
+    .submit {
+      width: 100%;
+      border: 0;
+      border-radius: 13px;
+      padding: 16px;
+      background: linear-gradient(90deg, #4f46e5, #5145ee);
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .submit:hover {
+      opacity: .94;
+    }
+
+    .submit:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 11px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .message.success {
+      display: block;
+      background: #eafaf3;
+      color: #08784d;
+      border: 1px solid #bdebd7;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff0f0;
+      color: #b42318;
+      border: 1px solid #ffd0d0;
+    }
+
+    .small {
+      text-align: center;
+      color: #7a819b;
       font-size: 13px;
-      opacity: 0.7;
+      margin-top: 20px;
+      line-height: 1.5;
     }
 
-    @media (max-width: 800px) {
-      .login-wrap {
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 850px) {
+      main {
         grid-template-columns: 1fr;
+        padding-top: 45px;
       }
 
-      .login-page {
-        padding-top: 40px;
-      }
-
-      .login-intro {
+      .intro {
         text-align: center;
       }
 
-      .login-intro p {
-        margin-left: auto;
-        margin-right: auto;
+      .benefits {
+        text-align: left;
+        max-width: 420px;
+        margin: 30px auto;
+      }
+
+      .card {
+        max-width: 500px;
+        width: 100%;
+        margin: auto;
       }
     }
   </style>
@@ -159,162 +273,408 @@
 
 <body>
 
-<header>
-
-  <a class="brand" href="index.html">
-    <b>M</b>
-
-    <span>
+<header class="topbar">
+  <div class="nav">
+    <a class="brand" href="index.html">
+      <div class="logo">M</div>
       Mileo
-      <small>Step by step, we grow together.</small>
-    </span>
-  </a>
+    </a>
 
-  <nav>
-    <a href="index.html#how">How it works</a>
-    <a href="index.html#learning">Learning</a>
-    <a href="index.html#progress">Progress</a>
-    <a href="teachers.html">Teach with us</a>
-  </nav>
-
-  <a class="btn mini" href="index.html#enquire">
-    Start your journey
-  </a>
-
+    <a class="home-link" href="index.html">Back to Mileo</a>
+  </div>
 </header>
 
+<main>
 
-<main class="login-page">
+  <section class="intro">
+    <div class="eyebrow">Your Mileo account</div>
 
-  <div class="login-wrap">
+    <h1>
+      Your learning.<br>
+      Your progress.<br>
+      <span>One pathway.</span>
+    </h1>
 
-    <section class="login-intro">
+    <p>
+      Sign in to continue your learning journey, see your progress
+      and keep working towards your next achievable goal.
+    </p>
 
-      <span class="kicker">
-        YOUR MILEO
-      </span>
+    <div class="benefits">
+      <div class="benefit">Your progress stays with you</div>
+      <div class="benefit">Learn with different Mileo teachers</div>
+      <div class="benefit">Work towards clear learning milestones</div>
+    </div>
+  </section>
 
-      <h1>
-        Pick up where
-        <em>you left off.</em>
-      </h1>
 
-      <p>
-        Mileo brings your lessons, learning records and progress
-        together in one place.
+  <section class="card">
+
+    <div class="tabs">
+      <button id="signInTab" class="tab active" type="button">
+        Sign in
+      </button>
+
+      <button id="signUpTab" class="tab" type="button">
+        Create account
+      </button>
+    </div>
+
+
+    <!-- SIGN IN -->
+
+    <div id="signInPanel">
+
+      <h2>Welcome back</h2>
+
+      <p class="subheading">
+        Sign in to continue your Mileo journey.
       </p>
 
-      <p>
-        Students, teachers and administrators use the same Mileo
-        learning system, with each person seeing the tools relevant
-        to their role.
+      <form id="signInForm">
+
+        <div class="field">
+          <label for="loginEmail">Email address</label>
+
+          <input
+            id="loginEmail"
+            type="email"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="loginPassword">Password</label>
+
+          <input
+            id="loginPassword"
+            type="password"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <button id="signInButton" class="submit" type="submit">
+          Sign in →
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- CREATE ACCOUNT -->
+
+    <div id="signUpPanel" class="hidden">
+
+      <h2>Create your account</h2>
+
+      <p class="subheading">
+        Create your Mileo account with any valid email address.
       </p>
 
-    </section>
+      <form id="signUpForm">
+
+        <div class="field">
+          <label for="name">Your name</label>
+
+          <input
+            id="name"
+            type="text"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="signupEmail">Email address</label>
+
+          <input
+            id="signupEmail"
+            type="email"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="signupPassword">Create password</label>
+
+          <input
+            id="signupPassword"
+            type="password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          >
+
+          <div class="password-note">
+            Use at least 6 characters.
+          </div>
+        </div>
+
+        <button id="signUpButton" class="submit" type="submit">
+          Create my Mileo account →
+        </button>
+
+      </form>
+
+    </div>
 
 
-    <section class="login-card">
+    <div id="message" class="message"></div>
 
-      <span class="kicker">
-        MILEO PORTAL
-      </span>
+    <div class="small">
+      Mileo uses secure email authentication.<br>
+      Social sign-in options can be added later.
+    </div>
 
-      <h2>Welcome back.</h2>
-
-      <p>
-        Choose your portal to continue.
-      </p>
-
-
-      <div class="portal-options">
-
-        <a class="portal-option" href="student-dashboard.html">
-
-          <span class="portal-icon student-icon">
-            ◉
-          </span>
-
-          <span>
-            <strong>Student</strong>
-            <small>
-              Lessons, learning pathway and progress
-            </small>
-          </span>
-
-          <span class="portal-arrow">→</span>
-
-        </a>
-
-
-        <a class="portal-option" href="teacher-dashboard.html">
-
-          <span class="portal-icon teacher-icon">
-            ✎
-          </span>
-
-          <span>
-            <strong>Teacher</strong>
-            <small>
-              Students, classes and lesson records
-            </small>
-          </span>
-
-          <span class="portal-arrow">→</span>
-
-        </a>
-
-
-        <a class="portal-option" href="admin/">
-
-          <span class="portal-icon admin-icon">
-            ⚙
-          </span>
-
-          <span>
-            <strong>Admin</strong>
-            <small>
-              Manage the Mileo learning platform
-            </small>
-          </span>
-
-          <span class="portal-arrow">→</span>
-
-        </a>
-
-      </div>
-
-
-      <div class="login-note">
-        Portal access is currently being built. Secure account
-        authentication will be added before real student or teacher
-        accounts are used.
-      </div>
-
-    </section>
-
-  </div>
+  </section>
 
 </main>
 
 
-<footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <div>
-    <strong>Mileo</strong>
-    <small>Step by step, we grow together.</small>
-  </div>
+<script>
 
-  <div>
-    <a href="index.html">Home</a>
-    　
-    <a href="teachers.html">Teach with Mileo</a>
-  </div>
+  const SUPABASE_URL =
+    "https://heaztfynqejioycqvjum.supabase.co";
 
-  <small>
-    Mileo · Structured online English learning
-  </small>
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_wP-MBTyxyhBV07Eg6ce2CA_fqYzvWWu";
 
-</footer>
+  const mileo = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+  const signInTab = document.getElementById("signInTab");
+  const signUpTab = document.getElementById("signUpTab");
+
+  const signInPanel = document.getElementById("signInPanel");
+  const signUpPanel = document.getElementById("signUpPanel");
+
+  const signInForm = document.getElementById("signInForm");
+  const signUpForm = document.getElementById("signUpForm");
+
+  const signInButton = document.getElementById("signInButton");
+  const signUpButton = document.getElementById("signUpButton");
+
+  const message = document.getElementById("message");
+
+
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "message " + type;
+  }
+
+
+  function clearMessage() {
+    message.textContent = "";
+    message.className = "message";
+  }
+
+
+  function showSignIn() {
+    clearMessage();
+
+    signInTab.classList.add("active");
+    signUpTab.classList.remove("active");
+
+    signInPanel.classList.remove("hidden");
+    signUpPanel.classList.add("hidden");
+  }
+
+
+  function showSignUp() {
+    clearMessage();
+
+    signUpTab.classList.add("active");
+    signInTab.classList.remove("active");
+
+    signUpPanel.classList.remove("hidden");
+    signInPanel.classList.add("hidden");
+  }
+
+
+  signInTab.addEventListener("click", showSignIn);
+  signUpTab.addEventListener("click", showSignUp);
+
+
+  signUpForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+    clearMessage();
+
+    const name =
+      document.getElementById("name").value.trim();
+
+    const email =
+      document.getElementById("signupEmail").value.trim();
+
+    const password =
+      document.getElementById("signupPassword").value;
+
+
+    signUpButton.disabled = true;
+    signUpButton.textContent = "Creating account…";
+
+
+    try {
+
+      const { data, error } = await mileo.auth.signUp({
+
+        email: email,
+
+        password: password,
+
+        options: {
+
+          data: {
+            full_name: name,
+            role: "student"
+          },
+
+          emailRedirectTo:
+            "https://londonlanguageschool.github.io/Online-English-Platform/login.html"
+        }
+
+      });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      if (data.session) {
+
+        showMessage(
+          "✓ Your account has been created. Taking you to your dashboard…",
+          "success"
+        );
+
+        setTimeout(function() {
+          window.location.href = "student-dashboard.html";
+        }, 1000);
+
+      } else {
+
+        showMessage(
+          "✓ Account created. Check your email and click the confirmation link. Then return here and sign in.",
+          "success"
+        );
+
+        signUpForm.reset();
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      showMessage(
+        error.message || "We couldn't create your account. Please try again.",
+        "error"
+      );
+
+    } finally {
+
+      signUpButton.disabled = false;
+      signUpButton.textContent =
+        "Create my Mileo account →";
+
+    }
+
+  });
+
+
+  signInForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+    clearMessage();
+
+
+    const email =
+      document.getElementById("loginEmail").value.trim();
+
+    const password =
+      document.getElementById("loginPassword").value;
+
+
+    signInButton.disabled = true;
+    signInButton.textContent = "Signing in…";
+
+
+    try {
+
+      const { data, error } =
+        await mileo.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data.session) {
+        throw new Error(
+          "We couldn't start your Mileo session."
+        );
+      }
+
+
+      showMessage(
+        "✓ Signed in. Opening your dashboard…",
+        "success"
+      );
+
+
+      setTimeout(function() {
+        window.location.href = "student-dashboard.html";
+      }, 600);
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      showMessage(
+        error.message || "Sign in failed. Check your email and password.",
+        "error"
+      );
+
+
+    } finally {
+
+      signInButton.disabled = false;
+      signInButton.textContent = "Sign in →";
+
+    }
+
+  });
+
+
+  async function checkExistingSession() {
+
+    const { data } = await mileo.auth.getSession();
+
+    if (data.session) {
+      window.location.href = "student-dashboard.html";
+    }
+
+  }
+
+
+  checkExistingSession();
+
+</script>
 
 </body>
 </html>
