@@ -4,6 +4,11 @@ const MILEO_API_URL =
 const form = document.getElementById("enquiryForm");
 const status = document.getElementById("formStatus");
 
+function showStatus(text, type) {
+  status.textContent = text;
+  status.className = type || "";
+}
+
 if (form) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -12,21 +17,21 @@ if (form) {
     const formData = new FormData(form);
 
     const data = {
-      name: formData.get("name") || "",
-      email: formData.get("email") || "",
-      phone: formData.get("phone") || "",
+      name: (formData.get("name") || "").trim(),
+      email: (formData.get("email") || "").trim(),
+      phone: (formData.get("phone") || "").trim(),
       course: formData.get("course") || "",
-      notes: formData.get("notes") || "",
+      notes: (formData.get("notes") || "").trim(),
       trialRequested: formData.get("trialRequested") || "No",
       source: "Website"
     };
 
     button.disabled = true;
     button.textContent = "Sending…";
-    status.textContent = "";
+    showStatus("");
 
     try {
-      await fetch(MILEO_API_URL, {
+      const response = await fetch(MILEO_API_URL, {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -34,13 +39,30 @@ if (form) {
         }
       });
 
-      status.textContent = "✓ Thanks — your enquiry has been received.";
+      let result = null;
+
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        result = null;
+      }
+
+      if (!response.ok || !result || result.success !== true) {
+        throw new Error(
+          (result && result.message) ||
+          "We couldn't send your enquiry. Please try again."
+        );
+      }
+
+      showStatus("✓ Thanks — your enquiry has been received.", "ok");
       form.reset();
 
     } catch (error) {
       console.error(error);
-      status.textContent =
-        "We couldn't send your enquiry. Please try again.";
+      showStatus(
+        error.message || "We couldn't send your enquiry. Please try again.",
+        "bad"
+      );
     } finally {
       button.disabled = false;
       button.textContent = "Send my enquiry →";
