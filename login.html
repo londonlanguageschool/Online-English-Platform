@@ -436,19 +436,12 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
 
 <script>
 
-  const SUPABASE_URL =
-    "https://heaztfynqejioycqvjum.supabase.co";
-
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_wP-MBTyxyhBV07Eg6ce2CA_fqYzvWWu";
-
-  const mileo = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+  /* Shared connection: assets/supabase-client.js */
+  const mileo = window.mileo;
 
 
   const signInTab = document.getElementById("signInTab");
@@ -636,8 +629,10 @@
       );
 
 
+      const role = await window.MileoAuth.getRole();
+
       setTimeout(function() {
-        window.location.href = "student-dashboard.html";
+        window.location.href = window.MileoAuth.homeFor(role);
       }, 600);
 
 
@@ -666,7 +661,10 @@
     const { data } = await mileo.auth.getSession();
 
     if (data.session) {
-      window.location.href = "student-dashboard.html";
+      const role = await window.MileoAuth.getRole();
+      if (role) {
+        window.location.href = window.MileoAuth.homeFor(role);
+      }
     }
 
   }

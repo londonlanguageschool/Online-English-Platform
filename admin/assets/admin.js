@@ -18,7 +18,7 @@ function bindControls(){
   document.getElementById("lessonStatus").addEventListener("change",renderLessons);
 }
 function navigate(page, hash=true){
-  const valid=["overview","lessons","teachers","students","packages","courses"];
+  const valid=["overview","lessons","teachers","students","packages","courses","applications"];
   if(!valid.includes(page)) page="overview";
   document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===`page-${page}`));
   document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===page));

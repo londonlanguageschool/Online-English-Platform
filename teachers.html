@@ -738,6 +738,73 @@
       font-size: 0.86rem;
     }
 
+    .consent {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+
+    .consent input {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      margin-top: 3px;
+      padding: 0;
+    }
+
+    .consent label {
+      font-weight: 500;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin: 0;
+    }
+
+    .hp-field {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .submit-button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+      transform: none;
+    }
+
+    .form-status {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      min-height: 1.4em;
+    }
+
+    .form-status.ok {
+      color: #177b52;
+    }
+
+    .form-status.bad {
+      color: #c0392b;
+    }
+
+    .application-success {
+      text-align: center;
+      padding: 12px 4px;
+    }
+
+    .application-success h3 {
+      color: var(--ink);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .application-success p {
+      color: var(--muted);
+    }
+
     footer {
       background: #20264d;
       color: rgba(255, 255, 255, 0.7);
@@ -1299,7 +1366,7 @@
       </div>
 
 
-      <form>
+      <form id="teacherApplicationForm" method="post" action="#apply">
 
         <div class="form-grid">
 
@@ -1313,6 +1380,8 @@
               id="firstName"
               name="firstName"
               type="text"
+              maxlength="80"
+              autocomplete="given-name"
               required
             />
 
@@ -1329,6 +1398,8 @@
               id="lastName"
               name="lastName"
               type="text"
+              maxlength="80"
+              autocomplete="family-name"
               required
             />
 
@@ -1345,6 +1416,8 @@
               id="email"
               name="email"
               type="email"
+              maxlength="254"
+              autocomplete="email"
               required
             />
 
@@ -1361,6 +1434,8 @@
               id="country"
               name="country"
               type="text"
+              maxlength="80"
+              autocomplete="country-name"
               required
             />
 
@@ -1378,6 +1453,9 @@
               name="timezone"
               type="text"
               placeholder="e.g. Europe/Rome"
+              maxlength="64"
+              list="timezoneList"
+              autocomplete="off"
             />
 
           </div>
@@ -1432,6 +1510,7 @@
             <textarea
               id="qualifications"
               name="qualifications"
+              maxlength="2000"
               placeholder="CELTA, DELTA, TEFL, TESOL, teaching degree or other relevant qualifications."
             ></textarea>
 
@@ -1447,6 +1526,7 @@
             <textarea
               id="specialisms"
               name="specialisms"
+              maxlength="2000"
               placeholder="General English, Cambridge, IELTS, Business English, children, teenagers, pronunciation, etc."
             ></textarea>
 
@@ -1462,6 +1542,7 @@
             <textarea
               id="availability"
               name="availability"
+              maxlength="2000"
               placeholder="Tell us which days and times you are normally available."
             ></textarea>
 
@@ -1477,11 +1558,32 @@
             <textarea
               id="motivation"
               name="motivation"
+              maxlength="4000"
               placeholder="Tell us what matters to you as a teacher and what interests you about this model."
             ></textarea>
 
           </div>
 
+        </div>
+
+
+        <datalist id="timezoneList"></datalist>
+
+
+        <!-- Spam trap: hidden from people, often filled in by bots. -->
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+
+        <div class="consent">
+          <input id="privacyConsent" name="privacyConsent" type="checkbox" required>
+          <label for="privacyConsent">
+            I agree that Mileo may store these details and use them only to
+            assess my application to teach. I can ask for them to be deleted
+            at any time.
+          </label>
         </div>
 
 
@@ -1493,10 +1595,12 @@
         </button>
 
 
-        <p class="note">
-          Prototype only: application storage
-          and processing are not connected yet.
-        </p>
+        <p
+          id="applicationStatus"
+          class="form-status"
+          role="status"
+          aria-live="polite"
+        ></p>
 
       </form>
 
@@ -1514,6 +1618,10 @@
   </div>
 
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
+<script src="assets/teacher-application.js"></script>
 
 </body>
 </html>
