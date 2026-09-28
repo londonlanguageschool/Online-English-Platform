@@ -1,4 +1,4 @@
--- Tests for DRAFT 002. Run locally after: stub, migration 001, drafts/002.
+-- Tests for DRAFT 003. Run locally after: stub, migrations 001-002, drafts/003.
 \set ON_ERROR_STOP 0
 \pset tuples_only on
 -- users: admin A, teacher T1 (assigned), teacher T2 (assessor), student S, other student O

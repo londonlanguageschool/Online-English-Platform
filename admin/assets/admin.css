@@ -27,3 +27,6 @@ body.auth-pending .app{visibility:hidden}
 .history{margin:6px 0 0;padding-left:20px}
 .history li{margin:4px 0}
 @media(max-width:800px){.detail-grid{grid-template-columns:1fr}}
+.detail-status{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.account-note{margin:0;padding:10px 14px;border-radius:12px;background:#fff6d6;font-size:.92rem;max-width:720px}
+.account-note.ok{background:#e3f7ec}

@@ -129,6 +129,15 @@
       `<li><strong>${esc((STATUS[h.to_status] || {}).label || h.to_status)}</strong> <span class="muted">${esc(date(h.changed_at))}</span></li>`).join("")}</ol>`;
   }
 
+  // Shown once a teacher is verified (needs migration 002 for user_id).
+  function accountNote(a) {
+    if (a.status !== "verified") return "";
+    if (a.user_id) {
+      return `<p class="account-note ok">✓ Teacher account active. ${esc(a.first_name)} can sign in and open the teacher dashboard.</p>`;
+    }
+    return `<p class="account-note">No confirmed Mileo account for ${esc(a.email)} yet. Ask ${esc(a.first_name)} to create one on the login page with this email. It becomes a teacher account automatically once they confirm their email.</p>`;
+  }
+
   function toLocalInput(iso) {
     if (!iso) return "";
     const d = new Date(iso);
@@ -151,7 +160,7 @@
         <span class="muted">${esc(a.email)} · received ${esc(date(a.created_at))}</span></div>
         <button class="text-btn" type="button" id="closeDetail">Close ✕</button>
       </div>
-      <div class="detail-status">${badge(a.status)}</div>
+      <div class="detail-status">${badge(a.status)}${accountNote(a)}</div>
       <div class="detail-grid">
         ${field("Country", a.country)}
         ${field("Time zone", a.timezone)}

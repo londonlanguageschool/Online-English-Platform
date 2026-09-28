@@ -49,13 +49,24 @@ These were all run on 27 Sep 2026 and every check passed:
 - An admin moving an application straight from `applied` to `verified` is refused; the full path works and is logged.
 - An admin can't edit an applicant's email and can't remove their own admin role.
 
-## Draft: 002 academic core (not live, for review)
+## Migration 002: verified teachers get teacher accounts
 
-`drafts/002_academic_core.DRAFT.sql` is a proposed design for Phase 4/6. It covers programmes, modules, skills (can-do statements), enrolments, teacher assignments, skill evidence, and independent academic checkpoints.
+Run `migrations/002_verified_teachers_get_accounts.sql` in the SQL Editor once, after 001.
+
+- When an application moves to **verified**, the Mileo account with the same email (it must be *confirmed*) becomes a **teacher** account.
+- If there's no account yet, it becomes a teacher account automatically when the teacher signs up and confirms that email.
+- If you move an application from verified to **rejected**, the account goes back to student.
+- Admin accounts are never changed, and nobody can make themselves a teacher.
+
+It was tested locally on 28 Sep 2026 with `tests/002_verified_teachers_tests.sql`, and all 11 checks passed.
+
+## Draft: 003 academic core (not live, for review)
+
+`drafts/003_academic_core.DRAFT.sql` is a proposed design for Phase 4/6. It covers programmes, modules, skills (can-do statements), enrolments, teacher assignments, skill evidence, and independent academic checkpoints.
 
 - Progress comes from evidence. Teachers record `introduced → practising → secure` for each skill, and the `student_skill_progress` view shows the latest stage and whether an independent checkpoint confirmed it. Nobody types in a percentage.
 - The database refuses a checkpoint assessor who is the student's own teacher.
 - Teachers can only record evidence for their own students, and only for skills in that student's programme. Evidence can't be edited after it's recorded.
 - Students see only their own data.
 
-It was tested locally on 27 Sep 2026 with `tests/002_academic_core_tests.sql`, and all 15 checks passed. **Don't run it on the live project** until the design has been reviewed.
+It was tested locally on 27 Sep 2026 with `tests/003_academic_core_tests.sql`, and all 15 checks passed. **Don't run it on the live project** until the design has been reviewed.
