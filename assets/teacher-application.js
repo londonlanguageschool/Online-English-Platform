@@ -60,7 +60,8 @@
       if (/consent/.test(message)) return "Please tick the privacy box to continue.";
       return "Please check the form — one of the answers is too long or missing.";
     }
-    return "Sorry — we couldn't submit your application just now. Please try again later.";
+    const ref = (code || (error && error.name) || "no-connection").toString().slice(0, 20);
+    return "Sorry — we couldn't submit your application just now. Please try again later. (Ref: " + ref + ")";
   }
 
   function showSuccess(firstName) {
