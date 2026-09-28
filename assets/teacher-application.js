@@ -84,6 +84,41 @@
     box.focus();
   }
 
+  /*
+    Turns the weekly grid into readable text for the admin screen, e.g.
+      Hours per week: 10–20 hours
+      Mon: Morning, Evening
+      Sat: Afternoon
+      Times are in: Europe/Rome
+      Notes: Not available in August
+  */
+  const DAY_ORDER = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  function buildAvailability() {
+    const byDay = {};
+    form.querySelectorAll('input[name="availSlot"]:checked').forEach(function (box) {
+      const parts = box.value.split("|");
+      (byDay[parts[0]] = byDay[parts[0]] || []).push(parts[1]);
+    });
+
+    const lines = [];
+    if (value("hoursPerWeek")) lines.push("Hours per week: " + value("hoursPerWeek"));
+    DAY_ORDER.forEach(function (day) {
+      if (byDay[day]) lines.push(day + ": " + byDay[day].join(", "));
+    });
+    if (value("timezone")) lines.push("Times are in: " + value("timezone"));
+    if (value("availabilityNotes")) lines.push("Notes: " + value("availabilityNotes"));
+
+    return lines.length ? lines.join("\n").slice(0, 2000) : null;
+  }
+
+  form.addEventListener("change", function (event) {
+    if (event.target && event.target.name === "availSlot") {
+      const group = document.getElementById("availabilityGroup");
+      if (group) group.classList.remove("invalid");
+    }
+  });
+
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
     showStatus("");
@@ -93,6 +128,14 @@
     // Bots fill the hidden field; pretend success and send nothing.
     if (value("website")) {
       showSuccess("");
+      return;
+    }
+
+    const availabilityGroup = document.getElementById("availabilityGroup");
+    if (availabilityGroup && !form.querySelector('input[name="availSlot"]:checked')) {
+      availabilityGroup.classList.add("invalid");
+      showStatus("Please tick at least one time you're usually available.", "bad");
+      availabilityGroup.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
 
@@ -110,7 +153,7 @@
       experience: optional("experience"),
       qualifications: optional("qualifications"),
       specialisms: optional("specialisms"),
-      availability: optional("availability"),
+      availability: buildAvailability(),
       motivation: optional("motivation"),
       privacy_consent: form.elements.privacyConsent.checked
     };

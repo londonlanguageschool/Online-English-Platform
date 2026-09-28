@@ -738,6 +738,106 @@
       font-size: 0.86rem;
     }
 
+    fieldset.availability {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      min-width: 0;
+    }
+
+    fieldset.availability legend {
+      font-weight: 850;
+      color: var(--ink);
+      margin-bottom: 4px;
+      padding: 0;
+    }
+
+    .field-help {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .avail-grid-wrap {
+      overflow-x: auto;
+    }
+
+    .avail-grid {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 6px;
+      margin: 0 -6px;
+    }
+
+    .avail-grid th {
+      font-size: 0.85rem;
+      font-weight: 850;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .avail-grid thead th small {
+      display: block;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .avail-grid tbody th {
+      text-align: left;
+      width: 52px;
+    }
+
+    .avail-grid td {
+      background: var(--lavender);
+      border-radius: 12px;
+      text-align: center;
+      padding: 0;
+    }
+
+    .avail-grid td input {
+      width: 24px;
+      height: 24px;
+      margin: 10px;
+      padding: 0;
+      accent-color: var(--indigo);
+      cursor: pointer;
+    }
+
+    .avail-grid td:has(input:checked) {
+      background: #d9d6ff;
+    }
+
+    .avail-extra {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .availability.invalid .avail-grid td {
+      box-shadow: inset 0 0 0 2px #c0392b;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 650px) {
+      .avail-extra {
+        grid-template-columns: 1fr;
+      }
+
+      .avail-grid td input {
+        margin: 8px 4px;
+      }
+    }
+
     .consent {
       display: flex;
       gap: 12px;
@@ -792,7 +892,10 @@
 
     .application-success {
       text-align: center;
-      padding: 12px 4px;
+      background: white;
+      border-radius: 26px;
+      padding: 40px 34px;
+      box-shadow: 0 24px 56px rgba(12, 12, 65, 0.2);
     }
 
     .application-success h3 {
@@ -1533,20 +1636,87 @@
           </div>
 
 
-          <div class="field full">
+          <fieldset class="field full availability" id="availabilityGroup" aria-describedby="availabilityHelp">
 
-            <label for="availability">
+            <legend>
               Typical weekly availability
-            </label>
+            </legend>
 
-            <textarea
-              id="availability"
-              name="availability"
-              maxlength="2000"
-              placeholder="Tell us which days and times you are normally available."
-            ></textarea>
+            <p class="field-help" id="availabilityHelp">
+              Tick every time you can usually teach, in <strong>your own time zone</strong>.
+            </p>
 
-          </div>
+            <div class="avail-grid-wrap">
+              <table class="avail-grid">
+                <thead>
+                  <tr><th scope="col"><span class="visually-hidden">Day</span></th><th scope="col">Morning<small>06–12</small></th><th scope="col">Afternoon<small>12–18</small></th><th scope="col">Evening<small>18–24</small></th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th scope="row">Mon</th>
+                  <td><input type="checkbox" name="availSlot" value="Mon|Morning" aria-label="Monday morning"></td>
+                  <td><input type="checkbox" name="availSlot" value="Mon|Afternoon" aria-label="Monday afternoon"></td>
+                  <td><input type="checkbox" name="availSlot" value="Mon|Evening" aria-label="Monday evening"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Tue</th>
+                  <td><input type="checkbox" name="availSlot" value="Tue|Morning" aria-label="Tuesday morning"></td>
+                  <td><input type="checkbox" name="availSlot" value="Tue|Afternoon" aria-label="Tuesday afternoon"></td>
+                  <td><input type="checkbox" name="availSlot" value="Tue|Evening" aria-label="Tuesday evening"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Wed</th>
+                  <td><input type="checkbox" name="availSlot" value="Wed|Morning" aria-label="Wednesday morning"></td>
+                  <td><input type="checkbox" name="availSlot" value="Wed|Afternoon" aria-label="Wednesday afternoon"></td>
+                  <td><input type="checkbox" name="availSlot" value="Wed|Evening" aria-label="Wednesday evening"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Thu</th>
+                  <td><input type="checkbox" name="availSlot" value="Thu|Morning" aria-label="Thursday morning"></td>
+                  <td><input type="checkbox" name="availSlot" value="Thu|Afternoon" aria-label="Thursday afternoon"></td>
+                  <td><input type="checkbox" name="availSlot" value="Thu|Evening" aria-label="Thursday evening"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Fri</th>
+                  <td><input type="checkbox" name="availSlot" value="Fri|Morning" aria-label="Friday morning"></td>
+                  <td><input type="checkbox" name="availSlot" value="Fri|Afternoon" aria-label="Friday afternoon"></td>
+                  <td><input type="checkbox" name="availSlot" value="Fri|Evening" aria-label="Friday evening"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Sat</th>
+                  <td><input type="checkbox" name="availSlot" value="Sat|Morning" aria-label="Saturday morning"></td>
+                  <td><input type="checkbox" name="availSlot" value="Sat|Afternoon" aria-label="Saturday afternoon"></td>
+                  <td><input type="checkbox" name="availSlot" value="Sat|Evening" aria-label="Saturday evening"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Sun</th>
+                  <td><input type="checkbox" name="availSlot" value="Sun|Morning" aria-label="Sunday morning"></td>
+                  <td><input type="checkbox" name="availSlot" value="Sun|Afternoon" aria-label="Sunday afternoon"></td>
+                  <td><input type="checkbox" name="availSlot" value="Sun|Evening" aria-label="Sunday evening"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="avail-extra">
+              <div>
+                <label for="hoursPerWeek">Hours per week you'd like to teach</label>
+                <select id="hoursPerWeek" name="hoursPerWeek" required>
+                  <option value="">Choose...</option>
+                  <option>Up to 5 hours</option>
+                  <option>5–10 hours</option>
+                  <option>10–20 hours</option>
+                  <option>20–30 hours</option>
+                  <option>30+ hours</option>
+                </select>
+              </div>
+              <div>
+                <label for="availabilityNotes">Anything else? <small>(optional)</small></label>
+                <input id="availabilityNotes" name="availabilityNotes" type="text" maxlength="300" placeholder="e.g. Not available in August">
+              </div>
+            </div>
+
+          </fieldset>
 
 
           <div class="field full">
