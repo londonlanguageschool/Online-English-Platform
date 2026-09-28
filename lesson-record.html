@@ -447,10 +447,14 @@ footer{
   }
 
 }
+
+    /* Access check (assets/auth-guard.js): hide the page until the role is confirmed */
+    body.auth-pending > *:not(script) { visibility: hidden; }
+    body.auth-pending { background: #f7f8fc; }
 </style>
 </head>
 
-<body>
+<body class="auth-pending" data-allow-roles="teacher,admin">
 
 <header>
   <div class="container nav">
@@ -966,6 +970,10 @@ document
 });
 
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
+<script src="assets/auth-guard.js"></script>
 
 </body>
 </html>

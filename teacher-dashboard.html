@@ -608,11 +608,26 @@ footer{
 
 }
 
+
+    /* Access check (assets/auth-guard.js): hide the page until the role is confirmed */
+    body.auth-pending > *:not(script) { visibility: hidden; }
+    body.auth-pending { background: #f7f8fc; }
+
+    .signout-btn {
+      margin-left: 10px;
+      border: 1px solid #dfe2ee;
+      background: white;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
 </style>
 </head>
 
 
-<body>
+<body class="auth-pending" data-allow-roles="teacher,admin">
 
 <header>
 
@@ -655,11 +670,15 @@ footer{
 
   <div class="teacher-menu">
 
-    <div class="small-avatar">
+    <div class="small-avatar" data-auth-initial>
       H
     </div>
 
-    Helen ▾
+    <span data-auth-name>Teacher</span>
+
+    <button class="signout-btn" type="button" data-auth-signout>
+      Sign out
+    </button>
 
   </div>
 
@@ -1201,6 +1220,10 @@ footer{
 <footer>
   Mileo Teacher Portal · Prototype
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
+<script src="assets/auth-guard.js"></script>
 
 </body>
 </html>
