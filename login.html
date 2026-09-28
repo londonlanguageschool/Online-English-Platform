@@ -269,7 +269,26 @@
         margin: auto;
       }
     }
-  </style>
+  
+    .forgot-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #4b46e5;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: block;
+      margin: 14px auto 0;
+    }
+</style>
 </head>
 
 <body>
@@ -354,10 +373,50 @@
             autocomplete="current-password"
             required
           >
+
+          <button id="forgotLink" class="forgot-link" type="button">
+            Forgot password?
+          </button>
         </div>
 
         <button id="signInButton" class="submit" type="submit">
           Sign in →
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- FORGOT PASSWORD -->
+
+    <div id="resetPanel" class="hidden">
+
+      <h2>Reset your password</h2>
+
+      <p class="subheading">
+        Enter your email and we'll send you a link to choose a new password.
+      </p>
+
+      <form id="resetForm">
+
+        <div class="field">
+          <label for="resetEmail">Email address</label>
+
+          <input
+            id="resetEmail"
+            type="email"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <button id="resetButton" class="submit" type="submit">
+          Send reset link →
+        </button>
+
+        <button id="backToSignIn" class="forgot-link back-link" type="button">
+          ← Back to sign in
         </button>
 
       </form>
@@ -438,6 +497,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/supabase-client.js"></script>
+<script src="assets/password-reset.js"></script>
 
 <script>
 
