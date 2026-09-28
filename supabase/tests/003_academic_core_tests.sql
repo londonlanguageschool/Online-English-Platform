@@ -1,4 +1,4 @@
--- Tests for DRAFT 003. Run locally after: stub, migrations 001-002, drafts/003.
+-- Tests for migration 003. Run locally on a fresh database after: stub, migrations 001, 002, 003.
 \set ON_ERROR_STOP 0
 \pset tuples_only on
 -- users: admin A, teacher T1 (assigned), teacher T2 (assessor), student S, other student O
@@ -52,3 +52,15 @@ select 'A13 student cannot add evidence:'; insert into skill_evidence (enrolment
 begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
 select 'A14 other student sees S progress rows: ' || count(*) from student_skill_progress where student_id='10000000-0000-0000-0000-0000000000b1'; rollback;
 begin; set local role anon; select 'A15 anon reads programmes:'; select count(*) from programmes; rollback;
+
+-- People helpers
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-00000000000a';
+select 'P1 admin lists people: ' || count(*) from admin_list_people(); rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a1';
+select 'P2 teacher list people (expect error):'; select count(*) from admin_list_people(); rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a1';
+select 'P3 teacher sees profiles (self + own student = 2): ' || count(*) from profiles; rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b1';
+select 'P4 student sees profiles (self + teacher = 2): ' || count(*) from profiles; rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+select 'P5 unassigned student sees only self (1): ' || count(*) from profiles; rollback;

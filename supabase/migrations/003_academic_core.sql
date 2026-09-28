@@ -1,9 +1,15 @@
 -- =====================================================================
--- MILEO — DRAFT migration 002: academic core (Phase 4 / 6 foundation)
+-- MILEO — Migration 003: academic core (courses, enrolments, progress)
 --
--- STATUS: DRAFT FOR REVIEW. Do NOT run on the live project yet.
+-- STATUS: READY FOR THE OWNER'S REVIEW. Not yet run on the live project.
 --         Tested locally on PostgreSQL 16 (see supabase/README.md).
---         Requires migration 001 to have been run first.
+--         Requires migrations 001 and 002.
+--
+-- HOW TO RUN (once): Supabase → SQL Editor → paste this whole file → Run.
+--   Supabase will warn about "destructive operations": that is the
+--   "revoke" lines, which REMOVE default open access (safer, not riskier).
+--   It runs as one all-or-nothing transaction. If you accidentally run it
+--   twice, the second run stops at "already exists" and changes nothing.
 --
 -- IDEA IN ONE PARAGRAPH
 --   A Programme (e.g. "General English B1") contains ordered Modules;
@@ -321,5 +327,46 @@ create policy "checkpoint results write" on public.checkpoint_skill_results for 
                  and (public.is_admin() or c.assessor_id = auth.uid())))
   with check (exists (select 1 from public.checkpoints c where c.id = checkpoint_id
                  and (public.is_admin() or c.assessor_id = auth.uid())));
+
+-- ---------------------------------------------------------------------
+-- PEOPLE: what admins, teachers and students may see of each other
+-- ---------------------------------------------------------------------
+
+-- Admin-only list of everyone with an account (email lives in auth.users,
+-- which the website can't read directly).
+create function public.admin_list_people()
+returns table (id uuid, email text, full_name text, role public.app_role, created_at timestamptz)
+language plpgsql stable security definer set search_path = ''
+as $$
+begin
+  if not public.is_admin() then
+    raise exception 'Only administrators can list people' using errcode = '42501';
+  end if;
+  return query
+    select p.id, u.email::text, p.full_name, p.role, p.created_at
+    from public.profiles p
+    join auth.users u on u.id = p.id
+    order by p.created_at desc;
+end;
+$$;
+revoke all on function public.admin_list_people() from public, anon;
+grant execute on function public.admin_list_people() to authenticated;
+
+-- A teacher may see the names of their current students; a student may see
+-- the name of their current teacher. Nothing else about other people.
+create function public.is_my_teacher_or_student(other uuid)
+returns boolean language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1
+    from public.teacher_assignments ta
+    join public.enrolments e on e.id = ta.enrolment_id
+    where ta.ends_on is null
+      and ((ta.teacher_id = auth.uid() and e.student_id = other)
+        or (e.student_id = auth.uid() and ta.teacher_id = other)))
+$$;
+
+create policy "profiles: read my teacher or students" on public.profiles
+  for select to authenticated
+  using (public.is_my_teacher_or_student(id));
 
 commit;

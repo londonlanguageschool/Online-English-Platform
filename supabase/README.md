@@ -60,13 +60,16 @@ Run `migrations/002_verified_teachers_get_accounts.sql` in the SQL Editor once, 
 
 It was tested locally on 28 Sep 2026 with `tests/002_verified_teachers_tests.sql`, and all 11 checks passed.
 
-## Draft: 003 academic core (not live, for review)
+## Migration 003: courses, enrolments and progress (ready for review, not yet run)
 
-`drafts/003_academic_core.DRAFT.sql` is a proposed design for Phase 4/6. It covers programmes, modules, skills (can-do statements), enrolments, teacher assignments, skill evidence, and independent academic checkpoints.
+`migrations/003_academic_core.sql` sets up:
+- **Programmes** (e.g. "General English A1"), made of ordered **modules**. Each module lists the **skills** it teaches, written as can-do statements.
+- **Enrolments**, which put a student on a programme, and **teacher assignments**, which give an enrolment one current teacher.
+- **Skill evidence**: after lessons, teachers record *introduced → practising → secure* for each skill. Progress is calculated from this evidence, never typed in as a percentage.
+- **Checkpoints**: assessed by someone other than the student's own teacher, to confirm the skills independently.
+- **Who sees what:**
+  - Students see only their own data and their teacher's name.
+  - Teachers see only their current students.
+  - Admins see everything, including a people list with emails via `admin_list_people()`.
 
-- Progress comes from evidence. Teachers record `introduced → practising → secure` for each skill, and the `student_skill_progress` view shows the latest stage and whether an independent checkpoint confirmed it. Nobody types in a percentage.
-- The database refuses a checkpoint assessor who is the student's own teacher.
-- Teachers can only record evidence for their own students, and only for skills in that student's programme. Evidence can't be edited after it's recorded.
-- Students see only their own data.
-
-It was tested locally on 27 Sep 2026 with `tests/003_academic_core_tests.sql`, and all 15 checks passed. **Don't run it on the live project** until the design has been reviewed.
+It was tested locally on 28 Sep 2026 with `tests/003_academic_core_tests.sql`, and all 20 checks passed.

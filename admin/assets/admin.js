@@ -18,11 +18,14 @@ function bindControls(){
   document.getElementById("lessonStatus").addEventListener("change",renderLessons);
 }
 function navigate(page, hash=true){
-  const valid=["overview","lessons","teachers","students","packages","courses","applications"];
+  const valid=["overview","lessons","teachers","students","packages","courses","applications","programmes"];
   if(!valid.includes(page)) page="overview";
   document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===`page-${page}`));
   document.querySelectorAll("[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===page));
   document.getElementById("pageTitle").textContent=page[0].toUpperCase()+page.slice(1);
+  const live=["applications","programmes"].includes(page);
+  const pill=document.getElementById("apiStatus"); if(pill) pill.hidden=live;
+  const rb=document.getElementById("refreshBtn"); if(rb) rb.hidden=live;
   if(hash) history.replaceState(null,"",`#${page}`);
   document.getElementById("sidebar").classList.remove("open");
 }

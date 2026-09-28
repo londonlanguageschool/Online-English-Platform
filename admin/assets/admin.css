@@ -30,3 +30,34 @@ body.auth-pending .app{visibility:hidden}
 .detail-status{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .account-note{margin:0;padding:10px 14px;border-radius:12px;background:#fff6d6;font-size:.92rem;max-width:720px}
 .account-note.ok{background:#e3f7ec}
+
+/* ---- Sidebar groups ---- */
+.nav-group{margin:14px 12px 4px;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.nav-group:first-child{margin-top:0}
+
+/* ---- Programmes & enrolments ---- */
+.setup-note{overflow-wrap:anywhere;margin:0 0 18px;padding:14px 18px;border-radius:14px;background:#fff6d6;font-weight:700}
+.prog-grid{align-items:start}
+.table-card.flat{box-shadow:none;border:1px solid var(--border)}
+.mini-form{display:grid;gap:10px;margin-top:16px}
+.mini-form label{display:grid;gap:4px;font-weight:800;color:var(--ink);font-size:.9rem}
+.mini-form small{font-weight:600;color:var(--muted)}
+.mini-form input,.mini-form select,.mini-form textarea{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-weight:600;background:#fcfcfe}
+.mini-form .button{justify-self:start}
+.form-row{display:flex;gap:10px;flex-wrap:wrap}
+.form-row label{flex:0 0 120px}
+.form-row label.grow{flex:1 1 200px}
+.small-note{font-size:.85rem;margin:0}
+.prog-enrolments{margin-top:22px}
+.module{border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:grid;gap:8px}
+.module h4{margin:0;font-size:1.05rem}
+.skill-list{margin:0;padding-left:18px;display:grid;gap:4px}
+.skill-list code{font-size:.8rem;color:var(--muted)}
+.inline-form{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.inline-form input,.inline-form select{border:1px solid var(--border);border-radius:10px;padding:8px 10px;font:inherit;background:#fcfcfe}
+.inline-form input.grow{flex:1 1 240px}
+.assign{display:flex;gap:6px;align-items:center}
+.assign select{border:1px solid var(--border);border-radius:10px;padding:7px 8px;font:inherit;max-width:180px}
+@media(max-width:800px){.toolbar{flex-wrap:wrap;gap:10px}.form-row label{flex:1 1 100%}}
+.prog-grid>*{min-width:0}
+.table-card.flat table{min-width:0}
