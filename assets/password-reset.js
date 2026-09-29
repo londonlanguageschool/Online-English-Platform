@@ -60,8 +60,10 @@
       if (error) console.warn("Mileo reset:", error.message);
 
       show(
-        "✓ If there's a Mileo account for " + email + ", we've sent a link to reset the password. " +
-        "Check your inbox (and junk folder). The email comes from Supabase Auth.",
+        "✓ Email sent to " + email + ". Look for an email from \"Supabase Auth\" (Mileo's secure login " +
+        "service) called \"Reset Your Password\" and click the link inside. " +
+        "Can't see it after a few minutes? Please check your junk / spam folder. " +
+        "(If there's no Mileo account with this email, no email will arrive.)",
         "success"
       );
     } catch (error) {
