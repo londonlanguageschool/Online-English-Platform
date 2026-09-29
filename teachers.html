@@ -916,6 +916,136 @@
       font-size: 0.9rem;
     }
 
+
+    /* FOUNDER + BENEFITS */
+
+    .founder {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 44px;
+      align-items: start;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .founder-photo {
+      width: 100%;
+      height: auto;
+      border-radius: 22px;
+      display: block;
+      background: var(--lavender);
+    }
+
+    .founder-copy p {
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .founder-name {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .founder-name span {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--indigo);
+    }
+
+    .founder-quote {
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: var(--peach);
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .founder-facts {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .founder-facts li {
+      background: var(--sky);
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .founder-facts strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+
+    .benefits-title {
+      margin-top: 72px;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .benefit-card {
+      border-radius: 22px;
+      padding: 24px;
+    }
+
+    .benefit-card h3 {
+      color: var(--ink);
+      font-size: 1.12rem;
+      margin-bottom: 8px;
+    }
+
+    .benefit-card p {
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .tint-peach { background: var(--peach); }
+    .tint-sky { background: var(--sky); }
+    .tint-lavender { background: var(--lavender); }
+    .tint-mint { background: var(--mint); }
+
+    .benefit-cta {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 900px) {
+      .founder {
+        grid-template-columns: 1fr;
+        padding: 22px;
+      }
+
+      .founder-photo {
+        max-width: 320px;
+      }
+
+      .founder-facts,
+      .benefit-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .benefit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* MOBILE */
 
     @media (max-width: 900px) {
@@ -1137,6 +1267,169 @@
 
         </div>
 
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- BUILT BY TEACHERS (founder + benefits) -->
+
+  <section class="founder-section" id="why">
+
+    <div class="container">
+
+      <div class="section-title">
+        <div class="kicker">
+          Built by teachers, for teachers
+        </div>
+        <h2>
+          Mileo is run by someone who has stood where you stand.
+        </h2>
+      </div>
+
+      <div class="founder">
+
+        <img
+          class="founder-photo"
+          src="assets/img/cole-bouchard.jpg"
+          alt="Cole Bouchard, founder of Mileo, teaching in front of a blackboard"
+          width="640"
+          height="800"
+          loading="lazy"
+        >
+
+        <div class="founder-copy">
+
+          <p class="founder-name">
+            Cole Bouchard
+            <span>Founder &amp; Director of Studies</span>
+          </p>
+
+          <p>
+            I've been teaching English since 2011, in Italy, Poland and the UK:
+            general and business English, Cambridge, IELTS and Trinity exam
+            preparation, and CLIL, with children, teenagers and adults.
+          </p>
+
+          <p>
+            Along the way I've been a Senior Teacher and a Director of Studies
+            twice, recruited and trained teachers, supported quality assurance
+            and managed busy residential summer-school centres in the UK.
+            I hold the Trinity Diploma (DELTA level) and CELTA, and I'm a
+            Cambridge Oral Examiner.
+          </p>
+
+          <p>
+            Before and alongside teaching, I managed teams and departments
+            at Virgin Active in London and founded and still run my own
+            business. So I know both sides: what teachers need to do their
+            best work, and what it takes to run an organisation that treats
+            them fairly.
+          </p>
+
+          <p class="founder-quote">
+            "I built Mileo because I've seen good teachers underpaid,
+            over-managed or left on their own, and students pay for lessons
+            without ever seeing real progress. Mileo is my answer to both."
+          </p>
+
+          <ul class="founder-facts" aria-label="Founder highlights">
+            <li><strong>15 years</strong> teaching English</li>
+            <li><strong>3 countries</strong> Italy · Poland · UK</li>
+            <li><strong>2×</strong> Director of Studies</li>
+            <li><strong>DELTA-level</strong> Trinity Diploma · CELTA</li>
+          </ul>
+
+        </div>
+
+      </div>
+
+
+      <div class="section-title benefits-title">
+        <div class="kicker">
+          Why work with Mileo
+        </div>
+        <h2>
+          The things teachers actually ask for.
+        </h2>
+      </div>
+
+      <div class="benefit-grid">
+
+        <div class="benefit-card tint-peach">
+          <h3>Fair pay for good work</h3>
+          <p>
+            Clear rates agreed up front and paid on time. Great teaching
+            is valued here, not squeezed for the lowest price.
+          </p>
+        </div>
+
+        <div class="benefit-card tint-sky">
+          <h3>Flexible hours, a real living</h3>
+          <p>
+            Choose when you teach: a few evenings or a full timetable.
+            We work to give you regular students, so flexibility doesn't
+            mean scraping by.
+          </p>
+        </div>
+
+        <div class="benefit-card tint-lavender">
+          <h3>Support, not a script</h3>
+          <p>
+            Programmes give clear outcomes and material to draw on.
+            How you get there in the lesson is your professional call.
+          </p>
+        </div>
+
+        <div class="benefit-card tint-mint">
+          <h3>Clear student goals</h3>
+          <p>
+            Know each learner's level, goal and history before you start.
+            No more first-lesson guesswork, even when you take over from
+            a colleague.
+          </p>
+        </div>
+
+        <div class="benefit-card tint-mint">
+          <h3>Progress you can see</h3>
+          <p>
+            Record skills as introduced, practising or secure. Students
+            see their progress grow, and so can you.
+          </p>
+        </div>
+
+        <div class="benefit-card tint-lavender">
+          <h3>Part of a community</h3>
+          <p>
+            Join a team of verified teachers to share ideas, materials
+            and advice with, and a school that knows you by name.
+          </p>
+        </div>
+
+        <div class="benefit-card tint-sky">
+          <h3>Honest feedback, real growth</h3>
+          <p>
+            Observations and feedback designed to help you grow, not to
+            catch you out. Development without anyone breathing down
+            your neck.
+          </p>
+        </div>
+
+        <div class="benefit-card tint-peach">
+          <h3>Online tools that save time</h3>
+          <p>
+            Your students, lesson notes and progress in one teacher
+            dashboard. Quick lesson records replace long reports, and
+            independent checkpoints mean you're never the only judge.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="benefit-cta">
+        <a class="button" href="#apply">Apply to teach →</a>
       </div>
 
     </div>
