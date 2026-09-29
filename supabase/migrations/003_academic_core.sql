@@ -11,6 +11,19 @@
 --   It runs as one all-or-nothing transaction. If you accidentally run it
 --   twice, the second run stops at "already exists" and changes nothing.
 --
+-- LANGUAGES: Mileo starts with English but is built for more languages.
+--   Every programme belongs to a language (English is seeded). CEFR levels
+--   and skill areas (speaking, listening...) work for any language.
+--
+-- MATCHING & PROFILES (owner decisions 29 Sep 2026)
+--   • Each enrolment has a MAIN teacher (the student's chosen/preferred one).
+--   • Students and teachers can set PRIVATE preferences about each other
+--     (favourite / prefer not / declined). Nobody ever sees the other side's.
+--   • Teachers keep a public profile; students keep a learning profile that
+--     only they, their teacher(s) and admins can read.
+--   • recommend_teachers(): "You may also like" suggestions for a student,
+--     leaving out anyone either side has ruled out, and nudging new teachers.
+--
 -- IDEA IN ONE PARAGRAPH
 --   A Programme (e.g. "General English B1") contains ordered Modules;
 --   each Module lists the Skills (can-do outcomes) it teaches.
@@ -38,8 +51,16 @@ begin;
 -- CURRICULUM
 -- ---------------------------------------------------------------------
 
+create table public.languages (
+  code        text primary key check (code ~ '^[a-z]{2,3}$'),   -- ISO 639: en, it, es…
+  name        text not null check (char_length(name) between 2 and 60),
+  active      boolean not null default true
+);
+insert into public.languages (code, name) values ('en', 'English');
+
 create table public.programmes (
   id           uuid primary key default gen_random_uuid(),
+  language_code text not null default 'en' references public.languages (code),
   code         text not null unique check (code ~ '^[A-Z0-9-]{2,24}$'),   -- e.g. GE-B1
   title        text not null check (char_length(title) between 2 and 120),
   cefr_level   text check (cefr_level in ('Pre-A1','A1','A2','B1','B2','C1','C2')),
@@ -368,5 +389,211 @@ $$;
 create policy "profiles: read my teacher or students" on public.profiles
   for select to authenticated
   using (public.is_my_teacher_or_student(id));
+
+-- ---------------------------------------------------------------------
+-- LANGUAGES: readable by everyone signed in, managed by admins
+-- ---------------------------------------------------------------------
+alter table public.languages enable row level security;
+revoke all on public.languages from anon, authenticated;
+grant select, insert, update on public.languages to authenticated;
+create policy "languages read" on public.languages for select to authenticated using (true);
+create policy "languages admin" on public.languages for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+
+-- Every code in an array must be a known language (arrays can't use foreign keys).
+create function public.all_known_languages(codes text[])
+returns boolean language sql stable security definer set search_path = '' as $$
+  select coalesce(bool_and(exists (select 1 from public.languages l where l.code = c)), true)
+  from unnest(codes) as c
+$$;
+
+-- ---------------------------------------------------------------------
+-- TEACHER PUBLIC PROFILES
+-- ---------------------------------------------------------------------
+create table public.teacher_profiles (
+  teacher_id        uuid primary key references public.profiles (id) on delete cascade,
+  headline          text check (char_length(headline) <= 120),
+  bio               text check (char_length(bio) <= 3000),
+  languages_taught  text[] not null default '{en}'
+                      check (cardinality(languages_taught) between 1 and 10 and public.all_known_languages(languages_taught)),
+  specialisms       text[] not null default '{}' check (cardinality(specialisms) <= 12),
+  languages_spoken  text[] not null default '{}' check (cardinality(languages_spoken) <= 10),
+  photo_url         text check (photo_url is null or (photo_url ~ '^https://' and char_length(photo_url) <= 500)),
+  video_url         text check (video_url is null or (video_url ~ '^https://' and char_length(video_url) <= 500)),
+  visible           boolean not null default true,
+  updated_at        timestamptz not null default now()
+);
+
+create function public.check_teacher_profile() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if (select role from public.profiles where id = new.teacher_id) <> 'teacher' then
+    raise exception 'Only verified teachers can have a teacher profile' using errcode = '23514';
+  end if;
+  new.updated_at := now();
+  return new;
+end $$;
+create trigger check_teacher_profile before insert or update on public.teacher_profiles
+  for each row execute function public.check_teacher_profile();
+
+alter table public.teacher_profiles enable row level security;
+revoke all on public.teacher_profiles from anon, authenticated;
+grant select, insert, update, delete on public.teacher_profiles to authenticated;
+
+create policy "teacher profiles: read visible" on public.teacher_profiles for select to authenticated
+  using (visible or teacher_id = auth.uid() or public.is_admin());
+create policy "teacher profiles: teacher writes own" on public.teacher_profiles for insert to authenticated
+  with check ((teacher_id = auth.uid() and public.my_role() = 'teacher') or public.is_admin());
+create policy "teacher profiles: teacher updates own" on public.teacher_profiles for update to authenticated
+  using (teacher_id = auth.uid() or public.is_admin())
+  with check (teacher_id = auth.uid() or public.is_admin());
+create policy "teacher profiles: admin deletes" on public.teacher_profiles for delete to authenticated
+  using (public.is_admin());
+
+-- ---------------------------------------------------------------------
+-- STUDENT LEARNING PROFILES (private: student, their teacher, admins)
+-- ---------------------------------------------------------------------
+create table public.student_profiles (
+  student_id          uuid primary key references public.profiles (id) on delete cascade,
+  learning_languages  text[] not null default '{en}'
+                        check (cardinality(learning_languages) between 1 and 5 and public.all_known_languages(learning_languages)),
+  level_self          text check (level_self in ('Not sure','Pre-A1','A1','A2','B1','B2','C1','C2')),
+  goals               text check (char_length(goals) <= 2000),
+  difficulties        text check (char_length(difficulties) <= 2000),
+  history             text check (char_length(history) <= 2000),
+  interests           text check (char_length(interests) <= 1000),
+  preferred_times     text check (char_length(preferred_times) <= 1000),
+  is_minor            boolean not null default false,
+  guardian_email      text check (guardian_email is null or (char_length(guardian_email) <= 254
+                        and guardian_email ~* '^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]{2,}$')),
+  updated_at          timestamptz not null default now(),
+  check (not is_minor or guardian_email is not null)
+);
+
+create trigger student_profiles_touch before update on public.student_profiles
+  for each row execute function public.touch_updated_at();
+
+alter table public.student_profiles enable row level security;
+revoke all on public.student_profiles from anon, authenticated;
+grant select, insert, update on public.student_profiles to authenticated;
+
+create policy "student profiles: read" on public.student_profiles for select to authenticated
+  using (student_id = auth.uid() or public.is_admin() or public.is_my_teacher_or_student(student_id));
+create policy "student profiles: student writes own" on public.student_profiles for insert to authenticated
+  with check (student_id = auth.uid() or public.is_admin());
+create policy "student profiles: student updates own" on public.student_profiles for update to authenticated
+  using (student_id = auth.uid() or public.is_admin())
+  with check (student_id = auth.uid() or public.is_admin());
+
+-- ---------------------------------------------------------------------
+-- PRIVATE MATCHING PREFERENCES
+--   Students: favourite / prefer_not a teacher.  Teachers: declined a student.
+--   Each side only ever sees the rows it set itself. Admins see everything.
+-- ---------------------------------------------------------------------
+create type public.match_preference as enum ('favourite', 'prefer_not', 'declined');
+
+create table public.match_preferences (
+  id          bigint generated always as identity primary key,
+  student_id  uuid not null references public.profiles (id) on delete cascade,
+  teacher_id  uuid not null references public.profiles (id) on delete cascade,
+  set_by      public.app_role not null check (set_by in ('student', 'teacher')),
+  kind        public.match_preference not null,
+  created_at  timestamptz not null default now(),
+  unique (student_id, teacher_id, set_by),
+  check ((set_by = 'student' and kind in ('favourite', 'prefer_not'))
+      or (set_by = 'teacher' and kind = 'declined'))
+);
+
+create function public.check_match_preference() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if (select role from public.profiles where id = new.teacher_id) <> 'teacher' then
+    raise exception 'Preferences can only be about teachers' using errcode = '23514';
+  end if;
+  if new.student_id = new.teacher_id then
+    raise exception 'A preference needs two different people' using errcode = '23514';
+  end if;
+  return new;
+end $$;
+create trigger check_match_preference before insert or update on public.match_preferences
+  for each row execute function public.check_match_preference();
+
+alter table public.match_preferences enable row level security;
+revoke all on public.match_preferences from anon, authenticated;
+grant select, insert, update, delete on public.match_preferences to authenticated;
+
+create policy "prefs: own side only" on public.match_preferences for select to authenticated
+  using (public.is_admin()
+      or (set_by = 'student' and student_id = auth.uid())
+      or (set_by = 'teacher' and teacher_id = auth.uid()));
+create policy "prefs: set own side" on public.match_preferences for insert to authenticated
+  with check (public.is_admin()
+      or (set_by = 'student' and student_id = auth.uid() and public.my_role() = 'student')
+      or (set_by = 'teacher' and teacher_id = auth.uid() and public.my_role() = 'teacher'));
+create policy "prefs: change own side" on public.match_preferences for update to authenticated
+  using (public.is_admin()
+      or (set_by = 'student' and student_id = auth.uid())
+      or (set_by = 'teacher' and teacher_id = auth.uid()))
+  with check (public.is_admin()
+      or (set_by = 'student' and student_id = auth.uid())
+      or (set_by = 'teacher' and teacher_id = auth.uid()));
+create policy "prefs: remove own side" on public.match_preferences for delete to authenticated
+  using (public.is_admin()
+      or (set_by = 'student' and student_id = auth.uid())
+      or (set_by = 'teacher' and teacher_id = auth.uid()));
+
+-- ---------------------------------------------------------------------
+-- "YOU MAY ALSO LIKE": teacher suggestions for the signed-in student
+--   • only visible profiles of teachers who teach that language
+--   • never someone the student marked "prefer not", or who declined them
+--   • never the student's current main teacher (they already have them)
+--   • favourites first; then teachers with fewer current students first,
+--     which nudges NEW teachers towards students; ties rotate at random.
+--   (Quality factors such as feedback and reliability will be added once
+--    lesson records and feedback exist.)
+-- ---------------------------------------------------------------------
+create function public.recommend_teachers(p_language text default 'en', p_limit int default 6)
+returns table (
+  teacher_id uuid, full_name text, headline text, bio text,
+  languages_taught text[], specialisms text[], languages_spoken text[],
+  photo_url text, video_url text, is_favourite boolean
+)
+language plpgsql volatile security definer set search_path = ''
+as $$
+declare
+  me uuid := auth.uid();
+begin
+  if me is null then
+    raise exception 'Please sign in' using errcode = '42501';
+  end if;
+
+  return query
+    select tp.teacher_id, p.full_name, tp.headline, tp.bio,
+           tp.languages_taught, tp.specialisms, tp.languages_spoken,
+           tp.photo_url, tp.video_url,
+           exists (select 1 from public.match_preferences f
+                   where f.student_id = me and f.teacher_id = tp.teacher_id
+                     and f.set_by = 'student' and f.kind = 'favourite') as is_favourite
+    from public.teacher_profiles tp
+    join public.profiles p on p.id = tp.teacher_id and p.role = 'teacher'
+    where tp.visible
+      and p_language = any (tp.languages_taught)
+      and tp.teacher_id <> me
+      and not exists (select 1 from public.match_preferences x
+                      where x.student_id = me and x.teacher_id = tp.teacher_id
+                        and ((x.set_by = 'student' and x.kind = 'prefer_not')
+                          or (x.set_by = 'teacher' and x.kind = 'declined')))
+      and not exists (select 1 from public.teacher_assignments ta
+                      join public.enrolments e on e.id = ta.enrolment_id
+                      where e.student_id = me and ta.teacher_id = tp.teacher_id and ta.ends_on is null)
+    order by
+      is_favourite desc,
+      (select count(*) from public.teacher_assignments ta2 where ta2.teacher_id = tp.teacher_id and ta2.ends_on is null) asc,
+      random()
+    limit greatest(1, least(coalesce(p_limit, 6), 12));
+end;
+$$;
+revoke all on function public.recommend_teachers(text, int) from public, anon;
+grant execute on function public.recommend_teachers(text, int) to authenticated;
 
 commit;

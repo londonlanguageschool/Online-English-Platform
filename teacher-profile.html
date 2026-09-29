@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mileo | My teacher profile</title>
+  <link rel="stylesheet" href="assets/mileo-new.css">
+</head>
+
+<body class="auth-pending" data-allow-roles="teacher">
+
+<header class="m-top">
+  <a class="m-brand" href="index.html"><span>M</span>Mileo</a>
+  <nav aria-label="Teacher">
+    <a class="m-link" href="teacher-dashboard.html">Dashboard</a>
+    <span class="m-who" data-auth-name>Teacher</span>
+    <button class="m-btn quiet" type="button" data-auth-signout>Sign out</button>
+  </nav>
+</header>
+
+<main class="m-main">
+
+  <section class="m-hero bg-blue">
+    <h1>Your teacher profile</h1>
+    <p>Students see this when they choose a teacher or get suggestions. Be yourself: warm and specific beats long and formal.</p>
+  </section>
+
+  <p id="setupNote" class="m-note" hidden></p>
+
+  <div class="m-grid">
+
+    <section class="m-card" aria-labelledby="formTitle">
+      <h2 id="formTitle">About you</h2>
+      <p>Everything here is visible to signed-in Mileo students.</p>
+
+      <form id="profileForm" class="m-form">
+
+        <div class="m-field">
+          <label for="headline">Headline</label>
+          <input id="headline" name="headline" type="text" maxlength="120"
+                 placeholder="e.g. Patient IELTS coach who loves conversation">
+          <small>One line that sums up how you teach.</small>
+        </div>
+
+        <div class="m-field">
+          <label for="bio">About me</label>
+          <textarea id="bio" name="bio" maxlength="3000" rows="6"
+                    placeholder="Your teaching background, what your lessons feel like, and who you love teaching."></textarea>
+          <small><span id="bioCount">0</span>/3000</small>
+        </div>
+
+        <fieldset class="m-field">
+          <legend class="m-legend">Languages I teach</legend>
+          <div class="m-chips" id="languagesTaught"></div>
+        </fieldset>
+
+        <fieldset class="m-field">
+          <legend class="m-legend">Specialisms <small>(up to 12)</small></legend>
+          <div class="m-chips" id="specialisms"></div>
+        </fieldset>
+
+        <div class="m-field">
+          <label for="spoken">Languages I speak</label>
+          <input id="spoken" name="spoken" type="text" maxlength="200" placeholder="e.g. English, Italian, Spanish">
+          <small>Separate with commas. Helpful for beginners.</small>
+        </div>
+
+        <div class="m-field">
+          <label for="photo">Photo link <small>(optional, must start with https://)</small></label>
+          <input id="photo" name="photo" type="url" maxlength="500" placeholder="https://…">
+        </div>
+
+        <div class="m-field">
+          <label for="video">Intro video link <small>(optional, e.g. YouTube or Vimeo)</small></label>
+          <input id="video" name="video" type="url" maxlength="500" placeholder="https://…">
+        </div>
+
+        <label class="m-check"><input id="visible" type="checkbox" checked> Show my profile to students</label>
+
+        <button id="saveBtn" class="m-btn" type="submit">Save profile</button>
+        <p id="status" class="m-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <aside aria-labelledby="previewTitle">
+      <h2 id="previewTitle" style="font-size:1.4rem;margin-bottom:10px">How students see you</h2>
+      <div class="t-card" id="preview"></div>
+    </aside>
+
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
+<script src="assets/auth-guard.js"></script>
+<script src="assets/teacher-card.js"></script>
+<script src="assets/teacher-profile.js"></script>
+
+</body>
+</html>

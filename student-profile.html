@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mileo | My learning profile</title>
+  <link rel="stylesheet" href="assets/mileo-new.css">
+</head>
+
+<body class="auth-pending" data-allow-roles="student">
+
+<header class="m-top">
+  <a class="m-brand" href="index.html"><span>M</span>Mileo</a>
+  <nav aria-label="Student">
+    <a class="m-link" href="student-dashboard.html">My learning</a>
+    <span class="m-who" data-auth-name>Student</span>
+    <button class="m-btn quiet" type="button" data-auth-signout>Sign out</button>
+  </nav>
+</header>
+
+<main class="m-main">
+
+  <section class="m-hero bg-pink">
+    <h1>Tell us about your English</h1>
+    <em class="it">Raccontaci del tuo inglese</em>
+    <p>Your teacher reads this before your lessons, so you never have to start from zero. Only you, your teacher and the Mileo team can see it.</p>
+  </section>
+
+  <p id="setupNote" class="m-note" hidden></p>
+
+  <div class="m-grid">
+
+    <section class="m-card" aria-labelledby="formTitle">
+      <h2 id="formTitle">My learning profile</h2>
+      <p>Il mio profilo di apprendimento. Write as much or as little as you like.</p>
+
+      <form id="learnerForm" class="m-form">
+
+        <fieldset class="m-field">
+          <legend class="m-legend">Which language are you learning?</legend>
+          <div class="m-chips" id="learningLanguages"></div>
+        </fieldset>
+
+        <div class="m-field">
+          <label for="level">What level do you think you are?</label>
+          <select id="level">
+            <option value="">Choose…</option>
+            <option>Not sure</option>
+            <option value="Pre-A1">Complete beginner (Pre-A1)</option>
+            <option value="A1">Beginner (A1)</option>
+            <option value="A2">Elementary (A2)</option>
+            <option value="B1">Intermediate (B1)</option>
+            <option value="B2">Upper-intermediate (B2)</option>
+            <option value="C1">Advanced (C1)</option>
+            <option value="C2">Proficient (C2)</option>
+          </select>
+          <small>Don't worry: we'll check this properly with you.</small>
+        </div>
+
+        <div class="m-field">
+          <label for="goals">What do you want to be able to do?</label>
+          <textarea id="goals" maxlength="2000" placeholder="e.g. Speak confidently in meetings, pass IELTS 6.5, chat with my partner's family…"></textarea>
+        </div>
+
+        <div class="m-field">
+          <label for="difficulties">What do you find difficult?</label>
+          <textarea id="difficulties" maxlength="2000" placeholder="e.g. Understanding fast speakers, phrasal verbs, feeling nervous when I speak…"></textarea>
+        </div>
+
+        <div class="m-field">
+          <label for="history">Your story with the language so far</label>
+          <textarea id="history" maxlength="2000" placeholder="e.g. Studied at school, forgot most of it, tried apps…"></textarea>
+        </div>
+
+        <div class="m-field">
+          <label for="interests">Things you enjoy talking about</label>
+          <input id="interests" type="text" maxlength="1000" placeholder="e.g. football, cooking, films, travel">
+          <small>Teachers use this to make lessons about things you care about.</small>
+        </div>
+
+        <div class="m-field">
+          <label for="times">When do you usually like lessons?</label>
+          <input id="times" type="text" maxlength="1000" placeholder="e.g. weekday evenings after 19:00, Saturday mornings">
+        </div>
+
+        <label class="m-check"><input id="minor" type="checkbox"> I am under 18</label>
+        <div class="m-field" id="guardianField" hidden>
+          <label for="guardian">Parent or guardian's email</label>
+          <input id="guardian" type="email" maxlength="254" autocomplete="off">
+          <small>Required for students under 18.</small>
+        </div>
+
+        <button id="saveBtn" class="m-btn" type="submit">Save my profile</button>
+        <p id="status" class="m-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <aside aria-labelledby="whyTitle">
+      <div class="m-card bg-yellow" style="border:0">
+        <h2 id="whyTitle" style="font-size:1.4rem">Why this helps</h2>
+        <p style="margin:6px 0 0;color:inherit">A teacher who already knows your goals can start helping from the very first minute, and if you ever change teacher, your story comes with you.</p>
+      </div>
+    </aside>
+  </div>
+
+  <section aria-labelledby="suggestTitle" style="margin-top:34px">
+    <h2 id="suggestTitle" style="font-size:2rem">You may also like</h2>
+    <em class="it" style="margin-bottom:14px">Altri insegnanti che potrebbero piacerti</em>
+    <p class="m-hint" style="margin:0 0 16px">Verified Mileo teachers who could suit you. Tap ♥ to save a favourite, or "Not for me" and we won't suggest them again. Teachers never see these choices.</p>
+    <div id="suggestions" class="t-list"></div>
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
+<script src="assets/auth-guard.js"></script>
+<script src="assets/teacher-card.js"></script>
+<script src="assets/student-profile.js"></script>
+
+</body>
+</html>

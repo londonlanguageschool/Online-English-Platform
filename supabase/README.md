@@ -72,4 +72,14 @@ It was tested locally on 28 Sep 2026 with `tests/002_verified_teachers_tests.sql
   - Teachers see only their current students.
   - Admins see everything, including a people list with emails via `admin_list_people()`.
 
-It was tested locally on 28 Sep 2026 with `tests/003_academic_core_tests.sql`, and all 20 checks passed.
+- **Languages:** English first, and other languages can be added later. Every programme belongs to a language.
+- **Teacher profiles** (public to signed-in users): headline, bio, languages taught, specialisms, languages spoken, and photo/video links. Only verified teachers can have one.
+- **Student learning profiles** (private): goals, difficulties, history, level, interests and preferred times. Only the student, their main teacher and admins can read them. Under-18s must have a guardian email.
+- **Private matching preferences:** students can mark a teacher as *favourite* or *prefer not*, and teachers can *decline* a student. Each side only ever sees its own choices.
+- **`recommend_teachers()`**, "You may also like":
+  - leaves out the student's main teacher and anyone either side has ruled out
+  - shows favourites first
+  - then puts teachers with fewer students first, so new teachers get a chance
+  - lets ties rotate
+
+It was tested locally on 29 Sep 2026 with `tests/003_academic_core_tests.sql`, and all 38 checks passed.

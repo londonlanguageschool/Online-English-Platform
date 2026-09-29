@@ -64,3 +64,53 @@ begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0
 select 'P4 student sees profiles (self + teacher = 2): ' || count(*) from profiles; rollback;
 begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
 select 'P5 unassigned student sees only self (1): ' || count(*) from profiles; rollback;
+
+-- ===== Profiles, private preferences, suggestions =====
+-- Users from above: admin a, teacher a1 (main teacher of student b1), teacher a2, student b1, student b2 (new, no teacher)
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a1';
+insert into teacher_profiles (teacher_id, headline, languages_taught) values ('10000000-0000-0000-0000-0000000000a1','IELTS specialist','{en}'); commit;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a2';
+insert into teacher_profiles (teacher_id, headline, languages_taught) values ('10000000-0000-0000-0000-0000000000a2','Conversation coach','{en}'); commit;
+select 'R1 teachers created own profiles: ' || count(*) from teacher_profiles;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a2';
+select 'R2 teacher edits another teacher''s profile (expect 0 rows):'; update teacher_profiles set headline='hacked' where teacher_id='10000000-0000-0000-0000-0000000000a1'; rollback;
+select 'R2b headline unchanged: ' || headline from teacher_profiles where teacher_id='10000000-0000-0000-0000-0000000000a1';
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b1';
+select 'R3 student creates a teacher profile (expect error):'; insert into teacher_profiles (teacher_id) values ('10000000-0000-0000-0000-0000000000b1'); rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a2';
+select 'R4 unknown language (expect error):'; update teacher_profiles set languages_taught='{xx}' where teacher_id=auth.uid(); rollback;
+
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b1';
+select 'R5 b1 suggestions (main teacher a1 excluded): ' || string_agg(headline, ', ') from recommend_teachers('en'); rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+select 'R6 new student b2, fewer-students teacher first: ' || string_agg(headline, ' > ') from recommend_teachers('en'); rollback;
+
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+insert into match_preferences (student_id, teacher_id, set_by, kind) values (auth.uid(), '10000000-0000-0000-0000-0000000000a2', 'student', 'prefer_not'); commit;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+select 'R7 after prefer_not a2: ' || coalesce(string_agg(headline, ', '),'none') from recommend_teachers('en'); rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a1';
+insert into match_preferences (student_id, teacher_id, set_by, kind) values ('10000000-0000-0000-0000-0000000000b2', auth.uid(), 'teacher', 'declined'); commit;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+select 'R8 after a1 declined b2: ' || coalesce(string_agg(headline, ', '),'none') from recommend_teachers('en');
+select 'R9 b2 sees only own preference rows: ' || count(*) || ' (' || string_agg(kind::text, ',') || ')' from match_preferences; rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a2';
+select 'R10 a2 (the one b2 prefers not) sees: ' || count(*) from match_preferences; rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+select 'R11 student forges a teacher decline (expect error):'; insert into match_preferences (student_id, teacher_id, set_by, kind) values (auth.uid(), '10000000-0000-0000-0000-0000000000a2', 'teacher', 'declined'); rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+select 'R12 student marks another student as favourite (expect error):'; insert into match_preferences (student_id, teacher_id, set_by, kind) values (auth.uid(), '10000000-0000-0000-0000-0000000000b1', 'student', 'favourite'); rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-00000000000a';
+select 'R13 admin sees all preference rows: ' || count(*) from match_preferences; rollback;
+
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b1';
+insert into student_profiles (student_id, goals, level_self) values (auth.uid(), 'Speak at work', 'A2'); commit;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a1';
+select 'R14 main teacher reads b1 learning profile: ' || count(*) from student_profiles; rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000a2';
+select 'R15 other teacher reads it (expect 0): ' || count(*) from student_profiles; rollback;
+begin; set local role authenticated; set local request.jwt.claim.sub='10000000-0000-0000-0000-0000000000b2';
+select 'R16 other student reads it (expect 0): ' || count(*) from student_profiles;
+select 'R17 minor without guardian email (expect error):'; insert into student_profiles (student_id, is_minor) values (auth.uid(), true); rollback;
+begin; set local role anon;
+select 'R18 anon suggestions (expect error):'; select * from recommend_teachers('en'); rollback;

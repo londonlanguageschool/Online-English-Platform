@@ -1,0 +1,119 @@
+/*
+  Mileo — new visual style (agreed 28 Sep 2026).
+  Cream background · pink / blue / yellow pastels · ONE action colour (green).
+  Used by the new pages first; the rest of the site will move over gradually.
+*/
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:ital,wght@0,600;0,700;0,800;0,900;1,600&display=swap");
+
+:root {
+  --cream: #FFF8EC;
+  --pink: #FFD3E2;
+  --blue: #CDE7FF;
+  --yellow: #FFEFB0;
+  --green: #0F9D58;
+  --green-dark: #0B7A44;
+  --ink: #1B1D4B;
+  --muted: #4E527A;
+  --line: #EFE3CC;
+  --white: #FFFFFF;
+  --bad: #B3261E;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Nunito, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.55;
+}
+
+h1, h2, h3 { font-family: "Baloo 2", Nunito, sans-serif; font-weight: 800; line-height: 1.1; margin: 0; }
+a { color: var(--ink); }
+em.it { display: block; font-weight: 600; color: var(--muted); }
+
+/* Access check (assets/auth-guard.js) */
+body.auth-pending > *:not(script) { visibility: hidden; }
+
+.m-top {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px max(16px, calc((100vw - 1120px) / 2));
+}
+.m-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 26px; }
+.m-brand span { width: 34px; height: 34px; border-radius: 50%; background: var(--pink); display: grid; place-items: center; font-size: 18px; }
+.m-top nav { margin-left: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.m-link { font-weight: 800; text-decoration: none; padding: 8px 10px; border-radius: 10px; }
+.m-link:hover { background: var(--white); }
+.m-who { font-weight: 700; color: var(--muted); }
+
+.m-main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 8px 0 56px; }
+
+.m-hero { border-radius: 32px; padding: 32px; margin-bottom: 22px; }
+.m-hero h1 { font-size: clamp(2rem, 5vw, 3rem); }
+.m-hero p { margin: 8px 0 0; font-size: 1.1rem; font-weight: 700; max-width: 720px; }
+.bg-pink, .m-card.bg-pink { background: var(--pink); }
+.bg-blue, .m-card.bg-blue { background: var(--blue); }
+.bg-yellow, .m-card.bg-yellow { background: var(--yellow); }
+
+.m-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+.m-card { background: var(--white); border: 2px solid var(--line); border-radius: 26px; padding: 26px; }
+.m-card h2 { font-size: 1.7rem; margin-bottom: 4px; }
+.m-card > p { margin: 0 0 16px; color: var(--muted); font-weight: 600; }
+
+.m-form { display: grid; gap: 16px; }
+.m-field { display: grid; gap: 6px; }
+.m-field > label, .m-legend { font-weight: 900; }
+.m-field small, .m-hint { font-weight: 600; color: var(--muted); }
+.m-field input[type=text], .m-field input[type=url], .m-field input[type=email], .m-field select, .m-field textarea {
+  width: 100%; font: inherit; font-weight: 600; color: var(--ink);
+  border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; background: #FFFDF8;
+}
+.m-field textarea { min-height: 100px; resize: vertical; }
+.m-field input:focus, .m-field select:focus, .m-field textarea:focus { outline: 3px solid var(--blue); border-color: var(--ink); }
+fieldset.m-field { border: 0; padding: 0; margin: 0; min-width: 0; }
+
+.m-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.m-chip { position: relative; }
+.m-chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.m-chip span { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--cream); border: 2px solid var(--line); font-weight: 800; }
+.m-chip input:checked + span { background: var(--yellow); border-color: var(--ink); }
+.m-chip input:focus-visible + span { outline: 3px solid var(--blue); }
+
+.m-check { display: flex; gap: 10px; align-items: center; font-weight: 800; }
+.m-check input { width: 22px; height: 22px; accent-color: var(--green); }
+
+.m-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 50px; padding: 0 24px; border: 0; border-radius: 16px;
+  background: var(--green); color: #fff; font: inherit; font-weight: 900; font-size: 1.2rem; /* ≥18.7px bold = 'large text', so white on green meets contrast */
+  cursor: pointer; text-decoration: none; box-shadow: 0 4px 0 var(--green-dark);
+}
+.m-btn:disabled { opacity: .6; cursor: wait; }
+.m-btn.quiet { background: var(--white); color: var(--ink); border: 2px solid var(--line); box-shadow: none; min-height: 44px; font-size: .95rem; padding: 0 16px; }
+.m-btn.small { min-height: 44px; padding: 0 16px; }
+
+.m-status { min-height: 1.4em; font-weight: 800; margin: 0; }
+.m-status.ok { color: var(--green-dark); }
+.m-status.bad { color: var(--bad); }
+.m-note { padding: 14px 18px; border-radius: 16px; background: var(--yellow); font-weight: 700; margin-bottom: 18px; overflow-wrap: anywhere; }
+
+/* Teacher preview card */
+.t-card { border-radius: 24px; background: var(--white); border: 2px solid var(--line); overflow: hidden; }
+.t-card-top { display: flex; gap: 14px; align-items: center; padding: 18px; background: var(--blue); }
+.t-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; background: var(--pink); display: grid; place-items: center; font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 28px; flex-shrink: 0; border: 3px solid #fff; }
+.t-name { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 1.35rem; line-height: 1.1; }
+.t-headline { font-weight: 700; }
+.t-body { padding: 18px; display: grid; gap: 10px; }
+.t-bio { margin: 0; white-space: pre-line; }
+.t-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.t-tag { padding: 4px 10px; border-radius: 999px; background: var(--cream); font-weight: 800; font-size: .85rem; }
+.t-actions { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 18px 18px; }
+.t-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.t-fav { background: var(--pink); }
+
+@media (max-width: 860px) {
+  .m-grid { grid-template-columns: 1fr; }
+  .m-hero, .m-card { padding: 20px; border-radius: 22px; }
+  .m-who { display: none; }
+}
