@@ -202,7 +202,8 @@
       e.preventDefault();
       const f = e.target;
       const row = {
-        code: f.code.value.trim().toUpperCase(),
+        // "Test a1" → "TEST-A1": spaces become hyphens, anything else is dropped.
+        code: f.code.value.trim().toUpperCase().replace(/\s+/g, "-").replace(/[^A-Z0-9-]/g, "").slice(0, 24),
         title: f.title.value.trim(),
         cefr_level: f.cefr_level.value || null,
         description: f.description.value.trim() || null
