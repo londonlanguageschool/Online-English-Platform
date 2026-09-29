@@ -60,7 +60,7 @@ Run `migrations/002_verified_teachers_get_accounts.sql` in the SQL Editor once, 
 
 It was tested locally on 28 Sep 2026 with `tests/002_verified_teachers_tests.sql`, and all 11 checks passed.
 
-## Migration 003: courses, enrolments and progress (ready for review, not yet run)
+## Migration 003: courses, enrolments and progress (run live 29 Sep 2026)
 
 `migrations/003_academic_core.sql` sets up:
 - **Programmes** (e.g. "General English A1"), made of ordered **modules**. Each module lists the **skills** it teaches, written as can-do statements.
@@ -83,3 +83,13 @@ It was tested locally on 28 Sep 2026 with `tests/002_verified_teachers_tests.sql
   - lets ties rotate
 
 It was tested locally on 29 Sep 2026 with `tests/003_academic_core_tests.sql`, and all 38 checks passed.
+
+## Migration 004: teacher profile photos
+
+Run `migrations/004_teacher_photos.sql` in the SQL Editor once, after 003.
+
+- Creates a public **teacher-photos** storage folder. Files can be at most 2 MB, and only JPEG, PNG or WebP.
+- Each teacher can only upload, replace or delete files in their own folder. Students and visitors can't upload anything.
+- The website checks each photo before uploading: JPG, PNG or WebP, at least 300×300 pixels and at most 10 MB. It then crops the photo to a square, shrinks it to 512 px and re-saves it, which also strips hidden location data.
+
+It was tested locally on 29 Sep 2026 with `tests/00b_local_storage_stub.sql` and `tests/004_teacher_photos_tests.sql`, and all 6 checks passed.

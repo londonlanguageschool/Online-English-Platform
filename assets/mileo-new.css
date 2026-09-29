@@ -117,3 +117,22 @@ fieldset.m-field { border: 0; padding: 0; margin: 0; min-width: 0; }
   .m-hero, .m-card { padding: 20px; border-radius: 22px; }
   .m-who { display: none; }
 }
+
+/* Photo upload (teacher profile) */
+.photo-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.photo-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.photo-row .t-avatar { width: 88px; height: 88px; }
+.photo-actions label.m-btn { cursor: pointer; }
+.photo-actions input:focus-visible + label { outline: 3px solid var(--ink); outline-offset: 2px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+details summary { cursor: pointer; font-weight: 700; }
+.photo-rules { margin: 4px 0 0; padding-left: 18px; font-size: .92rem; color: var(--muted); font-weight: 600; }
+.photo-rules strong { color: var(--ink); }
+[hidden] { display: none !important; }
+
+/* Help panels (teacher profile) */
+.guide { background: var(--cream); border: 2px solid var(--line); border-radius: 16px; padding: 10px 14px; }
+.guide summary { font-weight: 900; }
+.guide-body { display: grid; gap: 10px; margin-top: 10px; font-size: .95rem; }
+.guide-body p, .guide-body ol { margin: 0; }
+.guide-body ol { padding-left: 20px; }

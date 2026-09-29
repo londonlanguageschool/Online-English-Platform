@@ -48,6 +48,26 @@
           <textarea id="bio" name="bio" maxlength="3000" rows="6"
                     placeholder="Your teaching background, what your lessons feel like, and who you love teaching."></textarea>
           <small><span id="bioCount">0</span>/3000</small>
+          <details class="guide" id="bioHelper">
+            <summary>✨ Help me write my bio</summary>
+            <div class="guide-body">
+              <p>Answer a few questions and we'll draft your bio. You can edit it afterwards.</p>
+              <div class="m-field"><label for="bhYears">Years teaching</label>
+                <input id="bhYears" type="text" inputmode="numeric" maxlength="3" placeholder="e.g. 8"></div>
+              <div class="m-field"><label for="bhWhere">Countries or places you've taught</label>
+                <input id="bhWhere" type="text" maxlength="120" placeholder="e.g. Italy, Spain and online"></div>
+              <div class="m-field"><label for="bhQuals">Qualifications</label>
+                <input id="bhQuals" type="text" maxlength="160" placeholder="e.g. CELTA, DELTA, a degree in Linguistics"></div>
+              <fieldset class="m-field"><legend class="m-legend">Your lessons feel… <small>(pick up to 3)</small></legend>
+                <div class="m-chips" id="bhStyle"></div></fieldset>
+              <div class="m-field"><label for="bhLove">Something you love about teaching</label>
+                <input id="bhLove" type="text" maxlength="160" placeholder="e.g. seeing shy students start to chat with confidence"></div>
+              <div class="m-field"><label for="bhPersonal">A personal touch <small>(optional)</small></label>
+                <input id="bhPersonal" type="text" maxlength="120" placeholder="e.g. football, cooking and old films"></div>
+              <button id="bhGo" class="m-btn quiet" type="button">Write my bio</button>
+              <p class="m-hint" style="margin:0">Your specialisms and languages below are included automatically.</p>
+            </div>
+          </details>
         </div>
 
         <fieldset class="m-field">
@@ -67,13 +87,50 @@
         </div>
 
         <div class="m-field">
-          <label for="photo">Photo link <small>(optional, must start with https://)</small></label>
-          <input id="photo" name="photo" type="url" maxlength="500" placeholder="https://…">
+          <span class="m-legend">Profile photo</span>
+          <div class="photo-row">
+            <img id="photoThumb" class="t-avatar" alt="" hidden>
+            <div class="photo-actions">
+              <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photoRules" class="visually-hidden">
+              <label class="m-btn quiet" for="photoFile">Upload a photo from your device</label>
+              <button id="photoRemove" class="m-btn quiet" type="button" hidden>Remove photo</button>
+            </div>
+          </div>
+          <ul class="photo-rules" id="photoRules">
+            <li><strong>File type:</strong> JPG, PNG or WebP</li>
+            <li><strong>Size:</strong> at least 300 × 300 pixels (a square photo is best)</li>
+            <li><strong>File size:</strong> up to 10 MB</li>
+            <li><strong>Tip:</strong> a friendly, well-lit photo of your face, looking at the camera. We crop the centre into a square for you.</li>
+          </ul>
+          <p id="photoStatus" class="m-status" role="status" aria-live="polite"></p>
+          <details>
+            <summary class="m-hint">Or paste a link to a photo</summary>
+            <input id="photo" name="photo" type="url" maxlength="500" placeholder="https://…" style="margin-top:8px">
+          </details>
         </div>
 
         <div class="m-field">
-          <label for="video">Intro video link <small>(optional, e.g. YouTube or Vimeo)</small></label>
-          <input id="video" name="video" type="url" maxlength="500" placeholder="https://…">
+          <label for="video">Intro video link <small>(optional, but students love it)</small></label>
+          <input id="video" name="video" type="url" maxlength="500" placeholder="https://youtu.be/…" aria-describedby="videoHelp">
+          <p id="videoStatus" class="m-status" role="status" aria-live="polite"></p>
+          <details class="guide" id="videoHelp">
+            <summary>How to make a great intro video</summary>
+            <div class="guide-body">
+              <p><strong>Length:</strong> 60–90 seconds, and no more than 2 minutes.</p>
+              <p><strong>Shape:</strong> film <strong>horizontally</strong> (landscape, 16:9) so it fits well on phones and computers.</p>
+              <p><strong>What to say:</strong></p>
+              <ol>
+                <li>Hello, your name and where you're from.</li>
+                <li>How long you've been teaching and your key qualifications.</li>
+                <li>Who you love teaching (e.g. beginners, IELTS, business).</li>
+                <li>What a lesson with you feels like.</li>
+                <li>One personal touch: a hobby or something you enjoy.</li>
+                <li>A warm invitation: "I'd love to help you reach your goals."</li>
+              </ol>
+              <p><strong>Filming tips:</strong> quiet room · face a window for light · camera at eye level · look at the lens and smile · speak clearly at a natural pace · short Italian subtitles are a bonus.</p>
+              <p><strong>Sharing it:</strong> upload to YouTube as <em>Unlisted</em> (or Vimeo / Loom) and paste the link above.</p>
+            </div>
+          </details>
         </div>
 
         <label class="m-check"><input id="visible" type="checkbox" checked> Show my profile to students</label>
