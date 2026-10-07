@@ -1,979 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="robots" content="noindex, nofollow">
-<title>Mileo | Complete Lesson</title>
-
-<style>
-:root{
-  --ink:#20264d;
-  --indigo:#4b46e5;
-  --blue:#22a7f0;
-  --aqua:#2dd4bf;
-  --green:#36c978;
-  --yellow:#ffd166;
-  --coral:#ff6b63;
-  --paper:#f7f8fc;
-  --white:#ffffff;
-  --muted:#69718a;
-  --border:#e5e7f0;
-  --lavender:#f0efff;
-  --mint:#ebfaf4;
-  --shadow:0 14px 38px rgba(32,38,77,.08);
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-body{
-  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:var(--paper);
-  color:var(--ink);
-  line-height:1.5;
-}
-
-.container{
-  width:min(1000px,92%);
-  margin:auto;
-}
-
-/* HEADER */
-
-header{
-  background:white;
-  border-bottom:1px solid var(--border);
-}
-
-.nav{
-  min-height:70px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:900;
-  font-size:1.3rem;
-}
-
-.logo{
-  width:36px;
-  height:36px;
-  display:grid;
-  place-items:center;
-  color:white;
-  border-radius:11px;
-  background:linear-gradient(135deg,var(--indigo),var(--blue));
-}
-
-.teacher{
-  font-size:.9rem;
-  color:var(--muted);
-}
-
-/* PAGE */
-
-main{
-  padding:45px 0 80px;
-}
-
-.back{
-  color:var(--indigo);
-  font-size:.9rem;
-  font-weight:800;
-  margin-bottom:18px;
-}
-
-h1{
-  font-size:clamp(2rem,5vw,3.2rem);
-  line-height:1.05;
-  letter-spacing:-1.5px;
-}
-
-.intro{
-  color:var(--muted);
-  margin-top:10px;
-  max-width:700px;
-}
-
-/* STUDENT CARD */
-
-.student-card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:24px;
-  margin-top:30px;
-  box-shadow:var(--shadow);
-}
-
-.student-top{
-  display:flex;
-  justify-content:space-between;
-  gap:20px;
-  align-items:center;
-}
-
-.student{
-  display:flex;
-  gap:14px;
-  align-items:center;
-}
-
-.avatar{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  color:white;
-  font-weight:900;
-  background:linear-gradient(135deg,var(--aqua),var(--blue));
-}
-
-.student h2{
-  font-size:1.2rem;
-}
-
-.student p{
-  color:var(--muted);
-  font-size:.88rem;
-}
-
-.progress-badge{
-  background:var(--lavender);
-  color:var(--indigo);
-  padding:9px 13px;
-  border-radius:12px;
-  font-weight:850;
-  font-size:.84rem;
-}
-
-/* PREVIOUS INFO */
-
-.previous{
-  margin-top:20px;
-  padding-top:18px;
-  border-top:1px solid var(--border);
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-
-.info-label{
-  font-size:.72rem;
-  text-transform:uppercase;
-  letter-spacing:.7px;
-  color:var(--muted);
-  font-weight:900;
-  margin-bottom:4px;
-}
-
-.info-text{
-  font-size:.9rem;
-  font-weight:700;
-}
-
-/* FORM SECTIONS */
-
-.panel{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:27px;
-  margin-top:22px;
-  box-shadow:var(--shadow);
-}
-
-.step-label{
-  color:var(--indigo);
-  font-size:.75rem;
-  font-weight:900;
-  letter-spacing:.9px;
-  text-transform:uppercase;
-  margin-bottom:5px;
-}
-
-.panel h2{
-  font-size:1.3rem;
-  margin-bottom:5px;
-}
-
-.helper{
-  color:var(--muted);
-  font-size:.9rem;
-  margin-bottom:20px;
-}
-
-/* OUTCOMES */
-
-.outcome{
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:17px;
-  margin-bottom:12px;
-}
-
-.outcome-top{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-}
-
-.outcome input{
-  width:18px;
-  height:18px;
-  margin-top:3px;
-  accent-color:var(--indigo);
-}
-
-.outcome-title{
-  font-weight:800;
-}
-
-.outcome-sub{
-  color:var(--muted);
-  font-size:.83rem;
-  margin-top:3px;
-}
-
-.rating{
-  display:none;
-  margin-top:15px;
-  padding-top:14px;
-  border-top:1px solid var(--border);
-}
-
-.rating.visible{
-  display:block;
-}
-
-.rating label{
-  display:block;
-  font-size:.78rem;
-  font-weight:850;
-  color:var(--muted);
-  margin-bottom:7px;
-}
-
-select,
-textarea{
-  width:100%;
-  padding:12px 13px;
-  border:1px solid #dfe2ec;
-  border-radius:11px;
-  background:#fcfcfe;
-  color:var(--ink);
-  font:inherit;
-}
-
-select:focus,
-textarea:focus{
-  outline:none;
-  border-color:#aaa7ff;
-  box-shadow:0 0 0 4px rgba(75,70,229,.07);
-}
-
-textarea{
-  min-height:95px;
-  resize:vertical;
-}
-
-/* NOTE */
-
-.note-wrap{
-  position:relative;
-}
-
-.counter{
-  text-align:right;
-  font-size:.75rem;
-  color:var(--muted);
-  margin-top:5px;
-}
-
-/* RECOMMENDATION */
-
-.options{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.option{
-  border:2px solid var(--border);
-  border-radius:14px;
-  padding:14px;
-  cursor:pointer;
-  transition:.15s;
-}
-
-.option:hover{
-  border-color:#b8b5ff;
-}
-
-.option.selected{
-  border-color:var(--indigo);
-  background:#f7f6ff;
-}
-
-.option input{
-  margin-right:7px;
-  accent-color:var(--indigo);
-}
-
-.option strong{
-  font-size:.9rem;
-}
-
-/* PAYMENT */
-
-.payment-box{
-  background:var(--mint);
-  border:1px solid #d5f1e4;
-  border-radius:16px;
-  padding:17px;
-  margin-top:22px;
-  display:flex;
-  gap:12px;
-}
-
-.payment-icon{
-  width:34px;
-  height:34px;
-  border-radius:10px;
-  flex-shrink:0;
-  display:grid;
-  place-items:center;
-  background:var(--green);
-  color:white;
-  font-weight:900;
-}
-
-.payment-box strong{
-  display:block;
-  margin-bottom:3px;
-}
-
-.payment-box p{
-  color:#557265;
-  font-size:.84rem;
-}
-
-/* BUTTON */
-
-.submit{
-  width:100%;
-  margin-top:22px;
-  border:0;
-  border-radius:14px;
-  padding:15px;
-  background:linear-gradient(135deg,var(--coral),#ff845d);
-  color:white;
-  font-weight:900;
-  font-size:1rem;
-  cursor:pointer;
-  box-shadow:0 10px 22px rgba(255,107,99,.2);
-}
-
-.submit:hover{
-  transform:translateY(-1px);
-}
-
-/* SUCCESS */
-
-.success{
-  display:none;
-  background:white;
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:40px;
-  text-align:center;
-  box-shadow:var(--shadow);
-  margin-top:25px;
-}
-
-.success.visible{
-  display:block;
-}
-
-.success-icon{
-  width:65px;
-  height:65px;
-  margin:0 auto 15px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:var(--green);
-  color:white;
-  font-size:1.8rem;
-  font-weight:900;
-}
-
-.success h2{
-  margin-bottom:8px;
-}
-
-.success p{
-  color:var(--muted);
-}
-
-footer{
-  text-align:center;
-  padding:25px;
-  color:var(--muted);
-  font-size:.8rem;
-}
-
-@media(max-width:650px){
-
-  .student-top{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .previous,
-  .options{
-    grid-template-columns:1fr;
-  }
-
-}
-
-    /* Access check (assets/auth-guard.js): hide the page until the role is confirmed */
-    body.auth-pending > *:not(script) { visibility: hidden; }
-    body.auth-pending { background: #f7f8fc; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mileo | Record a lesson</title>
+  <link rel="stylesheet" href="assets/mileo-new.css">
 </head>
 
 <body class="auth-pending" data-allow-roles="teacher,admin">
 
-<header>
-  <div class="container nav">
-
-    <div class="brand">
-      <div class="logo">M</div>
-      Mileo
-    </div>
-
-    <div class="teacher">
-      Teacher portal · Helen
-    </div>
-
-  </div>
+<header class="m-top">
+  <a class="m-brand" href="index.html"><span>M</span>Mileo</a>
+  <nav aria-label="Teacher">
+    <a class="m-link" href="teacher-dashboard.html">← Dashboard</a>
+    <span class="m-who" data-auth-name>Teacher</span>
+    <button class="m-btn quiet" type="button" data-auth-signout>Sign out</button>
+  </nav>
 </header>
 
+<main class="m-main">
 
-<main>
+  <section class="m-hero bg-yellow">
+    <h1>Record a lesson</h1>
+    <p>A short, honest record keeps the student's journey up to date, and helps whoever teaches them next start in the right place.</p>
+  </section>
 
-<div class="container">
+  <p id="setupNote" class="m-note" hidden></p>
 
-  <div class="back">
-    ← Back to today's lessons
-  </div>
-
-  <h1>Complete lesson</h1>
-
-  <p class="intro">
-    Add a brief record of what happened today.
-    This keeps the student's Mileo journey up to date
-    and helps their next teacher continue smoothly.
-  </p>
-
-
-  <!-- STUDENT -->
-
-  <div class="student-card">
-
-    <div class="student-top">
-
-      <div class="student">
-
-        <div class="avatar">A</div>
-
+  <div id="recordArea" hidden>
+    <section class="m-card student-banner" aria-labelledby="studentName">
+      <div class="student-top">
+        <div class="t-avatar" id="studentInitial">S</div>
         <div>
-          <h2>Anna</h2>
-          <p>General English · Pre-A1 → A1</p>
+          <h2 id="studentName" class="student-name">Student</h2>
+          <div class="m-hint" id="studentProgramme"></div>
         </div>
-
       </div>
+      <p id="studentGoal" class="student-goal" hidden></p>
+      <div id="lastLesson" class="handover" hidden></div>
+    </section>
 
-      <div class="progress-badge">
-        8 / ~60 guided hours
-      </div>
+    <form id="lessonForm" class="m-form lesson-form">
 
-    </div>
-
-
-    <div class="previous">
-
-      <div>
-
-        <div class="info-label">
-          Previous lesson
-        </div>
-
-        <div class="info-text">
-          Personal information &amp; introductions
-        </div>
-
-      </div>
-
-
-      <div>
-
-        <div class="info-label">
-          Needs reinforcement
-        </div>
-
-        <div class="info-text">
-          Subject pronouns · he / she
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <form id="lessonForm">
-
-
-    <!-- OUTCOMES -->
-
-    <div class="panel">
-
-      <div class="step-label">
-        Step 1
-      </div>
-
-      <h2>What did you work on?</h2>
-
-      <p class="helper">
-        Select the Mileo outcomes covered during today's lesson.
-        Only rate outcomes you actually worked on.
-      </p>
-
-
-      <div class="outcome">
-
-        <div class="outcome-top">
-
-          <input
-            type="checkbox"
-            onchange="toggleRating(this,'rating1')"
-          >
-
-          <div>
-
-            <div class="outcome-title">
-              Understand common everyday signs
-            </div>
-
-            <div class="outcome-sub">
-              Reading · Stage 1
-            </div>
-
+      <section class="m-card">
+        <h2>The lesson</h2>
+        <div class="two-col">
+          <div class="m-field">
+            <label for="taughtOn">Date</label>
+            <input id="taughtOn" type="date" required>
           </div>
-
-        </div>
-
-        <div class="rating" id="rating1">
-
-          <label>
-            Student performance
-          </label>
-
-          <select>
-            <option>Choose...</option>
-            <option>Needs reinforcement</option>
-            <option>Satisfactory</option>
-            <option>Good</option>
-            <option>Excellent</option>
-          </select>
-
-        </div>
-
-      </div>
-
-
-      <div class="outcome">
-
-        <div class="outcome-top">
-
-          <input
-            type="checkbox"
-            onchange="toggleRating(this,'rating2')"
-          >
-
-          <div>
-
-            <div class="outcome-title">
-              Use vocabulary for common places in town
-            </div>
-
-            <div class="outcome-sub">
-              Vocabulary · Stage 1
-            </div>
-
+          <div class="m-field">
+            <label for="duration">Length</label>
+            <select id="duration">
+              <option value="30">30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="50" selected>50 minutes</option>
+              <option value="60">60 minutes</option>
+              <option value="90">90 minutes</option>
+            </select>
           </div>
-
         </div>
-
-        <div class="rating" id="rating2">
-
-          <label>
-            Student performance
-          </label>
-
-          <select>
-            <option>Choose...</option>
-            <option>Needs reinforcement</option>
-            <option>Satisfactory</option>
-            <option>Good</option>
-            <option>Excellent</option>
-          </select>
-
+        <div class="m-field">
+          <label for="summary">What did you work on?</label>
+          <textarea id="summary" maxlength="1000" rows="3" placeholder="e.g. Talking about last weekend: past simple, regular and irregular verbs."></textarea>
         </div>
+      </section>
 
-      </div>
+      <section class="m-card">
+        <h2>Step 1 · Skills you worked on</h2>
+        <p>Tick only the skills you actually practised today, and say how confident the student is now.</p>
+        <div id="skills"></div>
+      </section>
 
-
-      <div class="outcome">
-
-        <div class="outcome-top">
-
-          <input
-            type="checkbox"
-            onchange="toggleRating(this,'rating3')"
-          >
-
-          <div>
-
-            <div class="outcome-title">
-              Ask simple questions about location
-            </div>
-
-            <div class="outcome-sub">
-              Speaking · Stage 1
-            </div>
-
-          </div>
-
+      <section class="m-card">
+        <h2>Step 2 · Handover note</h2>
+        <p>Short and useful. Another Mileo teacher may read this before the next lesson.</p>
+        <div class="m-field">
+          <label for="handover" class="visually-hidden">Handover note</label>
+          <textarea id="handover" maxlength="500" rows="3" placeholder="e.g. Great fluency today. Still drops the -ed in past simple; start next lesson with a quick review."></textarea>
+          <small><span id="handoverCount">0</span>/500</small>
         </div>
-
-        <div class="rating" id="rating3">
-
-          <label>
-            Student performance
-          </label>
-
-          <select>
-            <option>Choose...</option>
-            <option>Needs reinforcement</option>
-            <option>Satisfactory</option>
-            <option>Good</option>
-            <option>Excellent</option>
-          </select>
-
+        <div class="m-field">
+          <label for="homework">Homework <small>(optional)</small></label>
+          <textarea id="homework" maxlength="1000" rows="2" placeholder="e.g. Write 5 sentences about your weekend."></textarea>
         </div>
+      </section>
 
-      </div>
+      <section class="m-card">
+        <h2>Step 3 · What should happen next?</h2>
+        <p>Your professional judgement helps Mileo plan the student's next lesson.</p>
+        <fieldset class="m-field next-steps">
+          <legend class="visually-hidden">Next step</legend>
+          <label class="next-option"><input type="radio" name="next" value="continue" checked><span><strong>Continue the pathway</strong>On track, move on to the next outcomes.</span></label>
+          <label class="next-option"><input type="radio" name="next" value="reinforce"><span><strong>Reinforce today's outcomes</strong>Needs a bit more practice first.</span></label>
+          <label class="next-option"><input type="radio" name="next" value="review"><span><strong>Significant review needed</strong>Go back over earlier material.</span></label>
+          <label class="next-option"><input type="radio" name="next" value="different_priority"><span><strong>A different priority</strong>The student needs something else right now (explain in your note).</span></label>
+        </fieldset>
+      </section>
 
-
-      <div class="outcome">
-
-        <div class="outcome-top">
-
-          <input
-            type="checkbox"
-            onchange="toggleRating(this,'rating4')"
-          >
-
-          <div>
-
-            <div class="outcome-title">
-              Understand simple directions
-            </div>
-
-            <div class="outcome-sub">
-              Listening · Stage 1
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="rating" id="rating4">
-
-          <label>
-            Student performance
-          </label>
-
-          <select>
-            <option>Choose...</option>
-            <option>Needs reinforcement</option>
-            <option>Satisfactory</option>
-            <option>Good</option>
-            <option>Excellent</option>
-          </select>
-
-        </div>
-
-      </div>
-
+      <button id="saveBtn" class="m-btn" type="submit">Save lesson record</button>
+      <p id="status" class="m-status" role="status" aria-live="polite"></p>
+    </form>
   </div>
 
-
-  <!-- HANDOVER -->
-
-  <div class="panel">
-
-    <div class="step-label">
-      Step 2
+  <section id="done" class="m-card done-card" hidden tabindex="-1">
+    <h2>✓ Lesson saved</h2>
+    <p id="doneText">The student's progress has been updated.</p>
+    <div class="student-actions">
+      <a class="m-btn small" href="teacher-dashboard.html">Back to my dashboard</a>
     </div>
-
-    <h2>Leave a quick handover note</h2>
-
-    <p class="helper">
-      Keep it useful and brief. Another Mileo teacher may
-      read this before the student's next lesson.
-    </p>
-
-    <div class="note-wrap">
-
-      <textarea
-        id="teacherNote"
-        maxlength="250"
-        oninput="updateCounter()"
-        placeholder="Example: Good vocabulary retention. Needs more practice forming 'Where is...?' questions."
-      ></textarea>
-
-      <div class="counter">
-        <span id="count">0</span> / 250
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- NEXT -->
-
-  <div class="panel">
-
-    <div class="step-label">
-      Step 3
-    </div>
-
-    <h2>What should happen next?</h2>
-
-    <p class="helper">
-      Use your professional judgement. This helps Mileo
-      recommend the student's next learning focus.
-    </p>
-
-
-    <div class="options">
-
-      <label class="option" onclick="selectOption(this)">
-
-        <input
-          type="radio"
-          name="next"
-          value="continue"
-        >
-
-        <strong>
-          Continue pathway
-        </strong>
-
-      </label>
-
-
-      <label class="option" onclick="selectOption(this)">
-
-        <input
-          type="radio"
-          name="next"
-          value="reinforce"
-        >
-
-        <strong>
-          Reinforce today's outcomes
-        </strong>
-
-      </label>
-
-
-      <label class="option" onclick="selectOption(this)">
-
-        <input
-          type="radio"
-          name="next"
-          value="review"
-        >
-
-        <strong>
-          Significant review needed
-        </strong>
-
-      </label>
-
-
-      <label class="option" onclick="selectOption(this)">
-
-        <input
-          type="radio"
-          name="next"
-          value="other"
-        >
-
-        <strong>
-          Different priority
-        </strong>
-
-      </label>
-
-    </div>
-
-
-    <div class="payment-box">
-
-      <div class="payment-icon">
-        ✓
-      </div>
-
-      <div>
-
-        <strong>
-          Lesson record required
-        </strong>
-
-        <p>
-          Completing the lesson record confirms the academic
-          record for this lesson. In the full Mileo system,
-          verified lesson completion will also move the
-          teacher's payment to payable status.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <button class="submit" type="submit">
-      Complete lesson &amp; submit record
-    </button>
-
-  </div>
-
-  </form>
-
-
-  <!-- SUCCESS -->
-
-  <div id="success" class="success">
-
-    <div class="success-icon">
-      ✓
-    </div>
-
-    <h2>
-      Lesson completed (prototype)
-    </h2>
-
-    <p>
-      This is a demonstration: nothing has been saved yet.
-      When lesson records are connected, the information from
-      this lesson will be available to Anna's next Mileo teacher.
-    </p>
-
-  </div>
-
-</div>
+  </section>
 
 </main>
-
-
-<footer>
-  Mileo teacher portal · Prototype
-</footer>
-
-
-<script>
-
-function toggleRating(checkbox,id){
-
-  const rating =
-    document.getElementById(id);
-
-  if(checkbox.checked){
-    rating.classList.add("visible");
-  }else{
-    rating.classList.remove("visible");
-  }
-
-}
-
-
-function updateCounter(){
-
-  const note =
-    document.getElementById("teacherNote");
-
-  document.getElementById("count")
-    .textContent = note.value.length;
-
-}
-
-
-function selectOption(element){
-
-  document
-    .querySelectorAll(".option")
-    .forEach(function(option){
-      option.classList.remove("selected");
-    });
-
-  element.classList.add("selected");
-
-}
-
-
-document
-.getElementById("lessonForm")
-.addEventListener("submit",function(event){
-
-  event.preventDefault();
-
-  this.style.display="none";
-
-  document
-    .getElementById("success")
-    .classList.add("visible");
-
-  window.scrollTo({
-    top:document.body.scrollHeight,
-    behavior:"smooth"
-  });
-
-});
-
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/supabase-client.js"></script>
 <script src="assets/auth-guard.js"></script>
+<script src="assets/lesson-record.js"></script>
 
 </body>
 </html>

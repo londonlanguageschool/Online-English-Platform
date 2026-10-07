@@ -136,3 +136,53 @@ details summary { cursor: pointer; font-weight: 700; }
 .guide-body { display: grid; gap: 10px; margin-top: 10px; font-size: .95rem; }
 .guide-body p, .guide-body ol { margin: 0; }
 .guide-body ol { padding-left: 20px; }
+
+/* Teacher dashboard */
+.verified-pill { display: inline-block; margin: 0 0 8px !important; padding: 4px 12px; border-radius: 999px; background: #fff; font-size: .9rem !important; font-weight: 900; }
+.nudge { display: grid; gap: 2px; text-decoration: none; padding: 16px 20px; border-radius: 20px; background: var(--yellow); margin-bottom: 18px; border: 2px solid var(--ink); }
+.nudge:hover { background: #FFE88A; }
+.stat-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 30px; }
+.stat-card { border-radius: 22px; padding: 18px 20px; display: grid; gap: 2px; font-weight: 800; }
+.stat-num { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 2.4rem; line-height: 1; }
+.section-h { font-size: 1.9rem; margin-bottom: 14px; }
+.student-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.student-card { display: grid; gap: 12px; align-content: start; }
+.student-top { display: flex; gap: 12px; align-items: center; }
+.student-name { font-size: 1.35rem; }
+.student-goal { margin: 0; font-weight: 700; }
+.student-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.handover { background: var(--blue); border-radius: 14px; padding: 12px 14px; }
+.handover p { margin: 4px 0 0; }
+.student-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.minor-flag { background: var(--pink); border-radius: 10px; padding: 6px 10px; font-weight: 800; }
+.empty-card h3 { font-size: 1.4rem; }
+.recent-ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.recent-ul li { display: grid; gap: 2px; padding-bottom: 10px; border-bottom: 2px dashed var(--line); }
+.recent-ul li:last-child { border-bottom: 0; padding-bottom: 0; }
+@media (max-width: 600px) { .stat-row { grid-template-columns: 1fr; } .stat-num { font-size: 2rem; } }
+
+/* Lesson record */
+.lesson-form { gap: 18px; margin-top: 18px; }
+.student-banner { display: grid; gap: 12px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.skill-group { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
+.skill-group legend { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 1.2rem; margin-bottom: 6px; }
+.skill-row { display: grid; gap: 8px; padding: 12px; border-radius: 16px; border: 2px solid var(--line); margin-bottom: 8px; }
+.skill-row.on { border-color: var(--ink); background: #FFFDF5; }
+.skill-row .m-check { align-items: flex-start; }
+.skill-row .m-check > span { display: grid; }
+.skill-area { font-size: .85rem; }
+.stage-pick { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 32px; }
+.stage-opt { position: relative; }
+.stage-opt input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.stage-opt span { display: inline-block; min-height: 40px; line-height: 36px; padding: 0 14px; border-radius: 999px; border: 2px solid var(--line); font-weight: 800; background: #fff; }
+.stage-opt input:checked + span { background: var(--blue); border-color: var(--ink); }
+.stage-opt input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+.stage-opt input:disabled + span { opacity: .45; }
+.next-steps { display: grid; gap: 8px; border: 0; padding: 0; }
+.next-option { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; border: 2px solid var(--line); cursor: pointer; }
+.next-option input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--green); flex-shrink: 0; }
+.next-option span { display: grid; font-weight: 600; }
+.next-option:has(input:checked) { border-color: var(--ink); background: var(--yellow); }
+.done-card { margin-top: 18px; background: var(--blue); border: 0; }
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } .stage-pick { padding-left: 0; } }

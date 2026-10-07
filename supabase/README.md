@@ -84,7 +84,7 @@ It was tested locally on 28 Sep 2026 with `tests/002_verified_teachers_tests.sql
 
 It was tested locally on 29 Sep 2026 with `tests/003_academic_core_tests.sql`, and all 38 checks passed.
 
-## Migration 004: teacher profile photos
+## Migration 004: teacher profile photos (run live 7 Oct 2026)
 
 Run `migrations/004_teacher_photos.sql` in the SQL Editor once, after 003.
 
@@ -93,3 +93,16 @@ Run `migrations/004_teacher_photos.sql` in the SQL Editor once, after 003.
 - The website checks each photo before uploading: JPG, PNG or WebP, at least 300×300 pixels and at most 10 MB. It then crops the photo to a square, shrinks it to 512 px and re-saves it, which also strips hidden location data.
 
 It was tested locally on 29 Sep 2026 with `tests/00b_local_storage_stub.sql` and `tests/004_teacher_photos_tests.sql`, and all 6 checks passed.
+
+## Migration 005: lesson records and keep-alive
+
+Run `migrations/005_lesson_records_and_keepalive.sql` in the SQL Editor once, after 004.
+
+- **Lesson records** store the date, length, what was covered, a handover note (up to 500 characters), homework and the next step. Skills worked on are saved as skill evidence linked to that lesson, through `record_lesson()`, which saves everything or nothing.
+  - Only the **current** teacher (or an admin) can add a record, dated within the last 60 days.
+  - The student, their current teacher and admins can read records. A new teacher sees the full history; a previous teacher no longer does.
+  - Records can't be edited afterwards; admins can correct them.
+- Teachers and students can see the programme they're enrolled in, even when it isn't published yet.
+- **`keepalive()`** is a tiny public function. `.github/workflows/supabase-keepalive.yml` calls it every 3 days so the free plan doesn't pause the project.
+
+It was tested locally on 7 Oct 2026 with `tests/005_lesson_records_tests.sql` (run after the 003 tests), and all 16 checks passed.
