@@ -106,3 +106,10 @@ Run `migrations/005_lesson_records_and_keepalive.sql` in the SQL Editor once, af
 - **`keepalive()`** is a tiny public function. `.github/workflows/supabase-keepalive.yml` calls it every 3 days so the free plan doesn't pause the project.
 
 It was tested locally on 7 Oct 2026 with `tests/005_lesson_records_tests.sql` (run after the 003 tests), and all 16 checks passed.
+
+Run live on 8 Oct 2026. The keep-alive was confirmed working by a manual run on 8 Oct and the first automatic run on 10 Oct.
+
+## Keeping things running while the project is paused
+
+- **Supabase:** the keep-alive workflow calls the database every 3 days, so the free plan doesn't pause.
+- **GitHub:** scheduled workflows are switched off after 60 days with no commits. Any small commit, even to this file, resets that clock. Last check-in: 13 Oct 2026.
