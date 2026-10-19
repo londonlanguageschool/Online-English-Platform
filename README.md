@@ -17,9 +17,9 @@ Live site: https://londonlanguageschool.github.io/Online-English-Platform/
 | `index.html` | Live. Homepage and enquiry form (Apps Script). |
 | `teachers.html` | Live. The teacher application saves to Supabase once `supabase/` setup is run. |
 | `login.html` | Live. Supabase sign-in and sign-up; sends each role to its own area. |
-| `student-dashboard.html` | Login protection is live; the content is **demo data**. |
-| `teacher-dashboard.html` | **Prototype**, fictional data, no login yet. |
-| `lesson-record.html` | **Prototype**; submitting doesn't save anything. |
+| `student-dashboard.html` | Live (real data). Programme by module, skill stages from lesson evidence, checkpoint results, next targets, teacher, lessons and homework. |
+| `teacher-dashboard.html` | Live (real data). Students, goals, progress, handover notes. |
+| `lesson-record.html` | Live. Saves a lesson and its skill evidence via `record_lesson()`. |
 | `admin/` | Admin-only login. **Applications** uses live data; the other tabs are **demo data**. |
 
 ## Security notes

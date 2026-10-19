@@ -186,3 +186,43 @@ details summary { cursor: pointer; font-weight: 700; }
 .next-option:has(input:checked) { border-color: var(--ink); background: var(--yellow); }
 .done-card { margin-top: 18px; background: var(--blue); border: 0; }
 @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } .stage-pick { padding-left: 0; } }
+
+/* Student dashboard */
+.prog-switch { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.prog-switch button { font: inherit; font-weight: 800; padding: 8px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--white); color: var(--ink); cursor: pointer; min-height: 44px; }
+.prog-switch button[aria-pressed="true"] { background: var(--yellow); border-color: var(--ink); }
+.dash-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+.dash-col { display: grid; gap: 22px; min-width: 0; }
+.module { border-top: 2px dashed var(--line); padding-top: 16px; margin-top: 16px; }
+.module:first-of-type { border-top: 0; padding-top: 0; margin-top: 8px; }
+.module-head { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.module-head h3 { font-size: 1.25rem; }
+.seg-bar { display: flex; gap: 4px; margin: 10px 0 12px; }
+.seg-bar span { flex: 1; height: 12px; border-radius: 6px; background: var(--line); }
+.seg-bar .s-introduced { background: var(--pink); }
+.seg-bar .s-practising { background: var(--blue); }
+.seg-bar .s-secure { background: var(--green); }
+.skill-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.skill-list li { display: flex; gap: 10px; justify-content: space-between; align-items: flex-start; padding: 10px 12px; border-radius: 14px; background: #FFFDF8; border: 2px solid var(--line); }
+.skill-list .can-do { font-weight: 700; }
+.skill-list .area { display: block; font-size: .85rem; color: var(--muted); font-weight: 700; text-transform: capitalize; }
+.stage { flex-shrink: 0; padding: 4px 10px; border-radius: 999px; font-weight: 900; font-size: .85rem; background: var(--cream); white-space: nowrap; }
+.stage.s-introduced { background: var(--pink); }
+.stage.s-practising { background: var(--blue); }
+.stage.s-secure { background: var(--green); color: #fff; }
+.stage.s-confirmed { background: var(--ink); color: #fff; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; }
+.target-list { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-weight: 700; }
+.lesson-item { display: grid; gap: 6px; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 2px dashed var(--line); }
+.lesson-item:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+.lesson-item p { margin: 0; }
+.homework { background: var(--yellow); border-radius: 12px; padding: 8px 12px; font-weight: 700; }
+.cp-item { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 0; border-bottom: 2px dashed var(--line); font-weight: 700; }
+.cp-item:last-child { border-bottom: 0; }
+.lesson-item .t-tags .stage { white-space: normal; max-width: 100%; }
+.legend { margin-bottom: 18px; }
+@media (max-width: 860px) {
+  .dash-grid { display: flex; flex-direction: column; }
+  .dash-col { display: contents; }
+  .dash-targets { order: -1; }
+}
