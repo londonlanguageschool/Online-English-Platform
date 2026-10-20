@@ -70,6 +70,9 @@
 
     const last = (lastRes.data || [])[0];
     if (last) {
+      // Handover notes live in their own teacher-only table (migration 006).
+      const n = await db.from("lesson_handover_notes").select("note").eq("lesson_record_id", last.id).maybeSingle();
+      if (!n.error && n.data) last.handover_note = n.data.note;
       const box = $("lastLesson");
       box.hidden = false;
       box.appendChild(el("strong", null, "Last lesson · " + fmtDate(last.taught_on)));

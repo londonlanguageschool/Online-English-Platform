@@ -96,6 +96,11 @@
       $("setupNote").textContent = "Lesson records aren't switched on yet. The Mileo team needs to finish one setup step (005).";
     }
     const lessons = lessonsRes.data;
+    // Handover notes live in their own teacher-only table (migration 006).
+    if (lessons.length) {
+      const notes = await soft(db.from("lesson_handover_notes").select("lesson_record_id,note").in("lesson_record_id", lessons.map((l) => l.id)));
+      notes.data.forEach((n) => { const l = lessons.find((x) => x.id === n.lesson_record_id); if (l) l.handover_note = n.note; });
+    }
 
     // Stats
     const now = new Date();

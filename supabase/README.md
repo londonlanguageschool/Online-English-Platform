@@ -113,3 +113,14 @@ Run live on 8 Oct 2026. The keep-alive was confirmed working by a manual run on 
 
 - **Supabase:** the keep-alive workflow calls the database every 3 days, so the free plan doesn't pause.
 - **GitHub:** scheduled workflows are switched off after 60 days with no commits. Any small commit, even to this file, resets that clock. Last check-in: 13 Oct 2026.
+
+## Migration 006: handover notes are for teachers only
+
+Run `migrations/006_private_handover_notes.sql` in the SQL Editor once, after 005.
+
+- Handover notes move out of `lesson_records` (which students can read) into `lesson_handover_notes`, which only the student's **current** teacher and admins can read.
+- Existing notes are copied across first, then the old column is removed.
+- `record_lesson()` takes the same inputs, so the website keeps working.
+- Students still see what was covered, homework and skills worked on.
+
+It was tested locally on 20 Oct 2026 with `tests/006_handover_notes_tests.sql` (run after the 003 and 005 tests), and all 10 checks passed.
