@@ -1,12 +1,13 @@
 # Keeps the free Supabase project from being paused after 7 quiet days.
-# Every 3 days GitHub calls the tiny public keepalive() function
+# Supabase wants "a few requests each day", so twice a day GitHub calls
+# the tiny public keepalive() function three times
 # (added in supabase/migrations/005). You can also run it by hand:
 # GitHub → Actions → "Keep Supabase awake" → Run workflow.
 name: Keep Supabase awake
 
 on:
   schedule:
-    - cron: "17 6 */3 * *"   # 06:17 UTC every 3rd day
+    - cron: "17 6,18 * * *"   # 06:17 and 18:17 UTC every day
   workflow_dispatch:
 
 permissions: {}
@@ -14,7 +15,7 @@ permissions: {}
 jobs:
   ping:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     steps:
       - name: Ping Supabase
         env:
@@ -22,7 +23,10 @@ jobs:
           # Publishable key: designed to be public (it's in the website too).
           SUPABASE_KEY: sb_publishable_wP-MBTyxyhBV07Eg6ce2CA_fqYzvWWu
         run: |
-          curl -fsS --retry 3 --retry-delay 20 -X POST "$SUPABASE_URL/rest/v1/rpc/keepalive" \
-            -H "apikey: $SUPABASE_KEY" -H "Content-Type: application/json" -d '{}'
-          echo
+          for i in 1 2 3; do
+            curl -fsS --retry 3 --retry-delay 20 -X POST "$SUPABASE_URL/rest/v1/rpc/keepalive" \
+              -H "apikey: $SUPABASE_KEY" -H "Content-Type: application/json" -d '{}'
+            echo
+            sleep 20
+          done
           echo "Supabase is awake."
