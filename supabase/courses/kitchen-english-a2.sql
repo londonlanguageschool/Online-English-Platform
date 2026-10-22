@@ -60,6 +60,31 @@ join public.skills s on s.code = link.skill_code
 where p.code = 'KE-A2'
 on conflict do nothing;
 
+-- Checkpoint tasks (only once migration 007 has added the column).
+do $do$
+begin
+  if exists (select 1 from information_schema.columns
+             where table_schema = 'public' and table_name = 'skills' and column_name = 'checkpoint_task') then
+    execute $sql$
+      update public.skills s set checkpoint_task = t.task
+      from (values
+        ('KE-A2.L01', 'Introduce yourself and tell me who does what in your kitchen.'),
+        ('KE-A2.L02', 'Look around your kitchen: name 6 things and say where they are.'),
+        ('KE-A2.L03', 'A delivery has arrived. Check it with me: is there any butter? Are there any eggs?'),
+        ('KE-A2.L04', 'I''m the chef: follow my 4 commands, then give me 3.'),
+        ('KE-A2.L05', 'Tell me how to make your signature dish, step by step.'),
+        ('KE-A2.L06', 'How long and at what temperature? Answer 4 quick questions.'),
+        ('KE-A2.L07', 'Tell me 3 things a new commis must and mustn''t do.'),
+        ('KE-A2.L08', 'I''m a customer with an allergy. Answer my questions about the menu.'),
+        ('KE-A2.L09', 'Service! Respond to my 4 calls from the pass.'),
+        ('KE-A2.L10', 'Tell me about a shift that went wrong and how you asked for help.')
+      ) as t(code, task)
+      where s.code = t.code and s.checkpoint_task is null
+    $sql$;
+  end if;
+end
+$do$;
+
 -- Quick check: should show 4 modules and 10 skills.
 select (select count(*) from public.modules m join public.programmes p on p.id = m.programme_id where p.code = 'KE-A2') as modules,
        (select count(*) from public.module_skills ms join public.modules m on m.id = ms.module_id

@@ -20,6 +20,8 @@ Live site: https://londonlanguageschool.github.io/Online-English-Platform/
 | `student-dashboard.html` | Live (real data). Programme by module, skill stages from lesson evidence, checkpoint results, next targets, teacher, lessons and homework. |
 | `teacher-dashboard.html` | Live (real data). Students, goals, progress, handover notes. |
 | `lesson-record.html` | Live. Saves a lesson and its skill evidence via `record_lesson()`. |
+| `checkpoint-assess.html` | Live once migration 007 is run. The assessor marks each skill ✓ / not yet and sends the result. |
+| `admin/checkpoints.html` | Live once migration 007 is run. Admin books an independent checkpoint. |
 | `admin/` | Admin-only login. **Applications** uses live data; the other tabs are **demo data**. |
 
 ## Security notes

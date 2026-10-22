@@ -14,6 +14,7 @@
   <a class="m-brand" href="index.html"><span>M</span>Mileo</a>
   <nav aria-label="Teacher">
     <a class="m-link" href="teacher-dashboard.html" aria-current="page">Dashboard</a>
+    <a class="m-link" href="checkpoint-assess.html">Checkpoints</a>
     <a class="m-link" href="teacher-profile.html">My profile</a>
     <span class="m-who" data-auth-name>Teacher</span>
     <button class="m-btn quiet" type="button" data-auth-signout>Sign out</button>
@@ -29,6 +30,10 @@
   </section>
 
   <p id="setupNote" class="m-note" hidden></p>
+  <a id="cpNudge" class="nudge" href="checkpoint-assess.html" hidden style="background:var(--blue)">
+    <strong id="cpNudgeText">You have a checkpoint to do →</strong>
+    <span>A quick, independent check of another teacher's student.</span>
+  </a>
   <a id="profileNudge" class="nudge" href="teacher-profile.html" hidden>
     <strong>Finish your teacher profile →</strong>
     <span id="profileNudgeText">Students choose teachers they can picture. Add a photo and a short bio.</span>

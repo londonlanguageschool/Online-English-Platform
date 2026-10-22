@@ -124,3 +124,15 @@ Run `migrations/006_private_handover_notes.sql` in the SQL Editor once, after 00
 - Students still see what was covered, homework and skills worked on.
 
 It was tested locally on 20 Oct 2026 with `tests/006_handover_notes_tests.sql` (run after the 003 and 005 tests), and all 10 checks passed.
+
+## Migration 007: checkpoints you can book, assess and celebrate
+
+Run `migrations/007_checkpoints.sql` in the SQL Editor once, after 006.
+
+- Admin books a checkpoint (`admin/checkpoints.html`): student + module, an assessor who is **not** the student's own teacher, a time and an optional call link.
+- The assessor (`checkpoint-assess.html`) sees only the student's first name, the module's skills and a one-line task per skill, never the teacher's notes. They mark each skill ✓ or not yet; `record_checkpoint()` saves it once, works out the outcome, and sends a "not yet" skill that was Secure back to Practising.
+- Assessors can't edit checkpoints directly any more; results only go through `record_checkpoint()`.
+- The student's dashboard opens a reward (chime, confetti, what they can do now, next goal) once, then `mark_checkpoint_seen()`.
+- Kitchen English skills get their checkpoint tasks.
+
+It was tested locally on 22 Oct 2026 with `tests/007_checkpoints_tests.sql` (run after the 003, 005 and 006 tests), and all 16 checks passed. Note: tests/003 uses the old direct assessor update, so run it before 007.

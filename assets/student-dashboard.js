@@ -57,6 +57,7 @@
   }
 
   let me = null;
+  let firstName = "";
   let enrolments = [];
   let programmes = [];
 
@@ -65,6 +66,7 @@
     const { data: u } = await db.auth.getUser();
     me = u.user;
     const first = ((me.user_metadata && me.user_metadata.full_name) || me.email.split("@")[0]).split(/\s+/)[0];
+    firstName = first;
     const hour = new Date().getHours();
     $("greeting").textContent = (hour < 12 ? "Good morning, " : hour < 18 ? "Good afternoon, " : "Good evening, ") + first + ".";
 
@@ -125,7 +127,7 @@
       soft(db.from("teacher_assignments").select("teacher_id,starts_on").eq("enrolment_id", enr.id).is("ends_on", null)),
       soft(db.from("lesson_records").select("id,taught_on,duration_minutes,summary,homework,created_at")
         .eq("enrolment_id", enr.id).order("taught_on", { ascending: false }).order("created_at", { ascending: false }).limit(20)),
-      soft(db.from("checkpoints").select("id,module_id,scheduled_at,status,outcome,summary,completed_at")
+      soft(db.from("checkpoints").select("*")
         .eq("enrolment_id", enr.id).order("scheduled_at", { ascending: false, nullsFirst: false }))
     ]);
     if (lessonsRes.error && missing(lessonsRes.error)) {
@@ -274,7 +276,114 @@
         c.status === "completed" ? (CP_OUTCOME[c.outcome] || "Completed") + " · " + fmtDate(c.completed_at)
           : "Booked" + (c.scheduled_at ? " · " + fmtDate(c.scheduled_at) : "")));
       cbox.appendChild(row);
+      if (c.status === "scheduled" && /^https:\/\//i.test(c.meeting_url || "")) {
+        const a = el("a", "m-btn small", "Join call");
+        a.href = c.meeting_url; a.target = "_blank"; a.rel = "noopener noreferrer";
+        cbox.appendChild(a);
+      }
       if (c.status === "completed" && c.summary) cbox.appendChild(el("p", "m-hint", c.summary));
+    });
+
+    // ---- A new checkpoint result? Open the reward (once).
+    const fresh = cps.find((c) => c.status === "completed" && "seen_by_student_at" in c && !c.seen_by_student_at);
+    if (fresh) showReward(fresh, modules, links, progress, prog).catch((e) => console.error(e));
+  }
+
+  /* The checkpoint reward: tap to open → chime, confetti, what you can do now, next goal. */
+  async function showReward(cp, modules, links, progress, prog) {
+    const UI = window.MileoCP;
+    if (!UI) return;
+    const db = window.mileo;
+    const res = await soft(db.from("checkpoint_skill_results").select("skill_id,confirmed").eq("checkpoint_id", cp.id));
+    const results = res.data;
+    const can = (id) => { const p = progress.find((x) => x.skill_id === id); return p ? p.can_do : ""; };
+    const yes = results.filter((r) => r.confirmed);
+    const notYet = results.filter((r) => !r.confirmed);
+    const mod = modules.find((m) => m.id === cp.module_id);
+    const nextMod = mod ? modules.find((m) => m.position === mod.position + 1) : null;
+    let goal = notYet.length ? UI.short(can(notYet[0].skill_id)) : "";
+    if (!goal && nextMod) {
+      const ids = links.filter((l) => l.module_id === nextMod.id).map((l) => l.skill_id);
+      const p = progress.find((x) => ids.includes(x.skill_id) && x.teacher_stage !== "secure" && x.checkpoint_confirmed !== true);
+      goal = p ? UI.short(p.can_do) : "Module " + nextMod.position + ": " + nextMod.title;
+    }
+
+    const { el: e } = UI;
+    const overlay = e("div", "reward");
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Your checkpoint result");
+    const box = e("div", "reward-box");
+    overlay.appendChild(box);
+
+    // Closed: wiggling signpost + Open
+    const sign = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    sign.setAttribute("width", "180"); sign.setAttribute("height", "180"); sign.setAttribute("viewBox", "0 0 190 190");
+    sign.setAttribute("aria-hidden", "true"); sign.setAttribute("class", "wiggle");
+    [["circle", { cx: 95, cy: 95, r: 88, fill: "#FFEFB0" }], ["rect", { x: 88, y: 30, width: 14, height: 130, rx: 7, fill: "#1B1D4B" }],
+     ["circle", { cx: 95, cy: 30, r: 11, fill: "#1B1D4B" }], ["path", { d: "M52 52 H128 L142 64 L128 76 H52 Z", fill: "#F7A8CB" }],
+     ["path", { d: "M138 88 H62 L48 100 L62 112 H138 Z", fill: "#7CCBF5" }], ["path", { d: "M52 124 H128 L142 136 L128 148 H52 Z", fill: "#6FD69B" }]]
+      .forEach(([t, a]) => { const n = document.createElementNS("http://www.w3.org/2000/svg", t); Object.entries(a).forEach(([k, v]) => n.setAttribute(k, v)); sign.appendChild(n); });
+    box.appendChild(sign);
+    const h = e("h2", null, "Your result is ready");
+    box.appendChild(h);
+    box.appendChild(e("em", "it", "Il tuo risultato è pronto"));
+    const openBtn = e("button", "m-btn big", "Open");
+    openBtn.type = "button";
+    box.appendChild(openBtn);
+    document.body.appendChild(overlay);
+    openBtn.focus();
+
+    const close = async () => {
+      overlay.remove();
+      await db.rpc("mark_checkpoint_seen", { p_checkpoint: cp.id });
+    };
+
+    openBtn.addEventListener("click", () => {
+      UI.chime();
+      if (yes.length) UI.confetti();
+      box.textContent = "";
+      const badge = e("div", "pop");
+      badge.appendChild(UI.ring(yes.length, results.length || 1, 140, yes.length + " of " + results.length + " skills confirmed"));
+      box.appendChild(badge);
+      const head = e("div", "rise");
+      head.style.animationDelay = ".3s";
+      head.appendChild(e("p", "kicker", yes.length ? "Congratulations, " + firstName + "!" : "Nearly there, " + firstName + "!"));
+      head.appendChild(e("h2", null, cp.outcome === "confirmed" && mod
+        ? "You've reached Module " + mod.position + (prog && prog.cefr_level ? " of " + prog.cefr_level : "")
+        : yes.length ? yes.length + " skill" + (yes.length > 1 ? "s" : "") + " confirmed!" : "Your next step is clear"));
+      box.appendChild(head);
+      if (yes.length) {
+        const wrap = e("div", "rise");
+        wrap.style.cssText = "width:100%;animation-delay:.55s";
+        wrap.appendChild(e("p", null, "Now you can…")).style.cssText = "margin:0 0 8px;font-weight:900;text-align:left";
+        const tiles = e("div", "can-tiles");
+        yes.slice(0, 2).forEach((r, i) => {
+          const t = e("div", "can-tile", UI.short(can(r.skill_id)));
+          t.style.background = i ? "#FFEFB0" : "#CDE7FF";
+          tiles.appendChild(t);
+        });
+        wrap.appendChild(tiles);
+        box.appendChild(wrap);
+      }
+      if (goal) {
+        const g = e("div", "next-goal rise");
+        g.style.animationDelay = ".8s";
+        g.appendChild(e("small", null, "NEXT GOAL"));
+        g.appendChild(e("strong", null, goal));
+        box.appendChild(g);
+      }
+      if (cp.summary) {
+        const m = e("p", "m-hint rise", "“" + cp.summary + "”");
+        m.style.cssText = "margin:0;animation-delay:.9s";
+        box.appendChild(m);
+      }
+      const go = e("button", "m-btn big rise", "Keep going");
+      go.type = "button";
+      go.style.cssText = "width:100%;animation-delay:1.05s";
+      go.addEventListener("click", close);
+      box.appendChild(go);
+      go.focus();
     });
   }
 

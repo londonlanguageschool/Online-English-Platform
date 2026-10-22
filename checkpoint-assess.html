@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mileo | Checkpoints to do</title>
+  <link rel="stylesheet" href="assets/mileo-new.css">
+</head>
+
+<body class="auth-pending" data-allow-roles="teacher,admin">
+
+<header class="m-top">
+  <a class="m-brand" href="index.html"><span>M</span>Mileo</a>
+  <nav aria-label="Teacher">
+    <a class="m-link" href="teacher-dashboard.html">Dashboard</a>
+    <a class="m-link" href="checkpoint-assess.html" aria-current="page">Checkpoints</a>
+    <span class="m-who" data-auth-name>Teacher</span>
+    <button class="m-btn quiet" type="button" data-auth-signout>Sign out</button>
+  </nav>
+</header>
+
+<main class="m-main">
+  <p id="setupNote" class="m-note" hidden></p>
+
+  <section id="listView">
+    <h1 class="cp-title">Checkpoints to do</h1>
+    <div id="list" class="cp-list"><p class="m-hint" style="text-align:center">Loading…</p></div>
+  </section>
+
+  <section id="assessView" hidden>
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:6px 0 24px">
+      <span id="aAvatar"></span>
+      <h1 id="aTitle" style="font-size:clamp(2rem,5vw,2.6rem)">Can …</h1>
+      <a id="aCall" class="m-btn small" href="#" target="_blank" rel="noopener noreferrer" hidden>Join call</a>
+    </div>
+    <div id="skills" class="cp-skills"></div>
+    <div class="cp-send">
+      <span id="aRing"></span>
+      <label class="visually-hidden" for="msg">One line for the student</label>
+      <input id="msg" type="text" maxlength="300" placeholder="One line for the student (optional)">
+      <button id="sendBtn" class="m-btn big" type="button">Send →</button>
+    </div>
+    <p id="status" class="m-status" role="status" aria-live="polite" style="text-align:center;margin-top:12px"></p>
+    <p style="text-align:center"><button id="backBtn" class="m-btn quiet" type="button">← Back</button></p>
+  </section>
+
+  <section id="doneView" hidden style="text-align:center">
+    <svg width="140" height="140" viewBox="0 0 150 150" role="img" aria-label="Sent" style="margin:20px auto 10px;display:block"><circle cx="75" cy="75" r="70" fill="#FFD3E2"></circle><circle cx="75" cy="75" r="48" fill="#0F9D58"></circle><path d="M52 76 L67 91 L98 60" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <h1 class="cp-title" style="margin-bottom:8px">Sent!</h1>
+    <p id="doneText" class="m-hint" style="font-size:1.1rem"></p>
+    <p><button id="againBtn" class="m-btn" type="button">Back to checkpoints</button></p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
+<script src="assets/auth-guard.js"></script>
+<script src="assets/checkpoint-ui.js"></script>
+<script src="assets/checkpoint-assess.js"></script>
+
+</body>
+</html>

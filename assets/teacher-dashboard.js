@@ -55,6 +55,13 @@
         : "Add a short bio, so students know what lessons with you feel like.";
     }
 
+    // Checkpoints booked with me (migration 007); silent if not set up yet.
+    window.mileo.rpc("my_checkpoints_to_assess").then(({ data, error }) => {
+      if (error || !data || !data.length) return;
+      $("cpNudge").hidden = false;
+      $("cpNudgeText").textContent = data.length === 1 ? "You have a checkpoint to do →" : "You have " + data.length + " checkpoints to do →";
+    });
+
     let assignments;
     try {
       assignments = await q(db.from("teacher_assignments").select("enrolment_id").eq("teacher_id", me.id).is("ends_on", null));
